@@ -16,13 +16,13 @@ There are several ways to contribute to the project:
 ### Reporting bugs
 
 If you have found a bug, you can report it using the
-[issues](https://github.com/grintex/template-english/issues). Before
+[issues](https://github.com/Dovyski/olen/issues). Before
 reporting your bug, it is important to do the following checks:
 
 1. Update your local repository to the latest `dev` branch. Maybe your bug has already been fixed in the latest version;
 2. Verify if the bug has not been previously reported by someone else (search the existing issues).
 
-If the bug has not been resolved or reported previously, then it is time to [create a new issue](https://github.com/grintex/template-english/issues/new). In the issue title try to summarize the problem by avoiding generic phrases like *"System Failure"* or *"Installation Problems"*.
+If the bug has not been resolved or reported previously, then it is time to [create a new issue](https://github.com/Dovyski/olen/issues/new). In the issue title try to summarize the problem by avoiding generic phrases like *"System Failure"* or *"Installation Problems"*.
 
 If possible, include images or videos in the bug description to make it easier to reproduce the problem. Use software like
 [LICEcap](https://www.cockos.com/licecap/) to create an animated gif of your screen. Also provide details about your environment: execution platform, operating system, browser and version, etc. You must also add the label **bug** to the issue.
@@ -38,7 +38,7 @@ We ask that you **do not make the fault public** for the safety of everyone usin
 Another great way to contribute is by suggesting improvements to the project, e.g. how it is structured. If you have any idea how we can improve the project, follow these steps:
 
 1. Make sure your idea is not already being addressed in our [roadmap](./ROADMAP.md);
-2. Also make sure the idea is not already listed in the [issues](https://github.com/grintex/template-english/issues);
+2. Also make sure the idea is not already listed in the [issues](https://github.com/Dovyski/olen/issues);
 3. Defend your idea and convincingly  explain why it should be
    followed. Here are some questions to consider:
    1. Will more users of the project benefit from this idea or only yourself?
@@ -47,7 +47,7 @@ Another great way to contribute is by suggesting improvements to the project, e.
    4. Is it really worth taking time to implement your idea within
       our priorities?
 
-After having examined all these questions, you can [create a new issue](https://github.com/grintex/template-english/issues/new) describing the enhancements. Use the label **enhancement**.
+After having examined all these questions, you can [create a new issue](https://github.com/Dovyski/olen/issues/new) describing the enhancements. Use the label **enhancement**.
 
 ### Requesting features
 
@@ -56,7 +56,7 @@ Time is a limited resource. Since this is a community (non-sponsored) project, s
 1. The feature in question solves a problem that is not solved by anything that already exists in the project;
 2. The feature solves a real issue validated by people that use the project.
 
-To create your feature request [create a new issue](https://github.com/grintex/template-english/issues/new) using the label **feature**.
+To create your feature request [create a new issue](https://github.com/Dovyski/olen/issues/new) using the label **feature**.
 
 ### Discussing issues
 

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Skeleton</title>
+	<script type="text/javascript" src="../js/3rdparty/jquery-2.2.0.min.js"></script>
+
+	<!-- Code to make the game work in experiment mode -->
+	<script src="../js/ftg.collector.js"></script>
+	<script src="../card-flipper/SetupState.js"></script>
+	<script src="app.js"></script>
+
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+		.subtle {
+			opacity: 0.5;
+		}
+
+		.strong {
+			font-weight: bold;
+			color: #aa0000;
+		}
+
+		#navbar {
+			padding: 10px;
+			width: 40%;
+			background: #d0d0d0;
+			float: left;
+		}
+
+		#navbar li {
+			margin-bottom: 45px;
+		}
+
+		#console {
+			padding: 20px;
+			font-family: "Courier New", Courier, monospace;
+			width: 50%;
+			border: 1px solid #000;
+			background: #c0c0c0;
+			color: #000;
+			float: right;
+			overflow: scroll;
+			height: 600px;
+		}
+    </style>
+</head>
+<body>
+	<div id="navbar">
+		<h1>Control</h1>
+		<ul>
+			<li><button data-action="testA">ACTION: testing A</button> ddd</li>
+			<li><button data-action="testB">ACTION: testing B</button></li>
+			<li><button data-action="testC">ACTION: testing C</button></li>
+			<li><button data-milestone="milestoneD">MILESTONE: milestone D</button></li>
+		</ul>
+	</div>
+	<div id="console"></div>
+</body>
+</html>

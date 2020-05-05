@@ -5,8 +5,9 @@
 ; Unique identifier for this experiment
 id=1
 
-; Default language for this experiment
-locale=pt
+; Current language for this experiment. This will
+; be overriden by "?locale=" in the URL.
+locale=en
 
 ; UA-XXXXX-Y
 ga=

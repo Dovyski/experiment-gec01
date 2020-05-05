@@ -39,6 +39,23 @@ function lang($theKey, $theLocale = '') {
     return $aPiece;
 }
 
+function validateLocale($theLocale = '', $theDefaultLocale = 'en') {
+    global $gIniLang;
+    
+    if(isset($gIniLang[$theLocale])) {
+        return $theLocale;
+    } else {
+        return $theDefaultLocale;
+    }
+}
+
+function initLocale() {
+    global $gIniExperiment;
+
+    $aLocale = isset($_REQUEST['locale']) ? $_REQUEST['locale'] : config('locale');
+    $gIniExperiment['locale'] = validateLocale($aLocale);
+}
+
 // Get info about all games (name, id, etc)
 function findGames($thePDO) {
     $aGames = array();

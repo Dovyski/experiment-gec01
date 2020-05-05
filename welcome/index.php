@@ -8,6 +8,9 @@
 require_once(dirname(__FILE__) . '/../backend/config.php');
 require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 
+initLocale();
+
+$aLocale = config('locale');
 $aDb = new PDO('sqlite:' . DB_FILE_PATH);
 $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -23,10 +26,11 @@ try {
 
         $aData = [
             'uuid' => $aUuid,
+            'locale' => $aLocale,
             'created_at' => time()
         ];
 
-        $aSql = "INSERT INTO subjects (uuid, created_at) VALUES (:uuid, :created_at)";
+        $aSql = "INSERT INTO subjects (uuid, locale, created_at) VALUES (:uuid, :locale, :created_at)";
         $aStmt= $aDb->prepare($aSql);
         $aStmt->execute($aData);
 
@@ -34,22 +38,18 @@ try {
         $aExperimentUserId = $aSubjectDbId . '' . $aUuid;
         $aHit = urlencode(base64_encode(str_repeat($aUuid, 6)));
 
-        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&uid=' . $aExperimentUserId . '&t=' . time());
+        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&t=' . time());
     }
 } catch(Exception $e) {
 	$aError = $e->getMessage();
 }
 
-$aLocale = config('locale');
-$aTitle = config('title', $aLocale);
-$aDescription = config('description', $aLocale);
-
 ?>
 <!doctype html>
-<html lang="<?php echo config('locale'); ?>">
+<html lang="<?php echo $aLocale ?>">
 <head>
 	<meta charset="UTF-8" />
-    <title><?php echo $aTitle ?> | Olen</title>
+    <title><?php echo config('title', $aLocale) ?> | Olen</title>
     
     <?php if(config('ga')) { ?>
         <!-- Google Analytics -->
@@ -69,13 +69,13 @@ $aDescription = config('description', $aLocale);
 </head>
 <body>
     <h1><?php echo lang('welcome') ?><h2>
-    <p><?php echo $aDescription ?></p>
+    <p><?php echo config('description', $aLocale) ?></p>
 
     <?php if(!empty($aError)) { ?>
         <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
     <?php } ?>
 
-    <form action="./?start=<?php echo time() ?>" method="post">
+    <form action="./?locale='.<?php echo $aLocale ?>.'&start=<?php echo time() ?>" method="post">
         <button><?php echo lang('continue') ?></button>
     </form>
 

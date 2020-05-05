@@ -7,13 +7,6 @@
  var FTG = FTG || {};
 
  FTG.Experiment = function() {
-     this.MARIO_INSTRUCTIONS =
-        '<p class="head">How to play:</p>' +
-        '<li><img src="../img/keys/a.png" title="A" class="key" /> <p>(Press and hold) <strong>RUN</strong><br />(Press and hold) <strong>CARRY things</strong><br /><strong>FIREBALL</strong> (if Mario has a flower)</p></li>' +
-        '<li><img src="../img/keys/s.png" title="S" class="key" /> <p><strong>JUMP</strong><br /><small>The SPACE key also works for jumping</small></p></li>' +
-        '<li><img src="../img/keys/left.png" title="Left arrow" class="key" /> <p><strong>MOVE left</strong></p></li>' +
-        '<li><img src="../img/keys/right.png" title="Right arrow" class="key" /> <p><strong>MOVE right</strong></p></li>';
-
      this.mUid;
      this.mUser;
      this.mCurrentGame;
@@ -26,36 +19,18 @@
      this.mCalmSound;
 
      this.mGames = [
-         // Calibration games
          {id: 1, name: 'card-flipper', url: '../card-flipper/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
          {id: 2, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
          {id: 3, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
-
-         // Mario A
-         {id: 4, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'A1'}, instructions: this.MARIO_INSTRUCTIONS},
-         {id: 5, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'A2'}, instructions: this.MARIO_INSTRUCTIONS},
-         {id: 6, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'A3'}, instructions: this.MARIO_INSTRUCTIONS},
-
-         // Mario B
-         {id: 7, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'B1'}, instructions: this.MARIO_INSTRUCTIONS},
-         {id: 8, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'B2'}, instructions: this.MARIO_INSTRUCTIONS},
-         {id: 9, name: 'cots-mario', url: '../cots-mario/', width: 1000, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'B3'}, instructions: this.MARIO_INSTRUCTIONS},
-
-         // Mario C
-         {id: 10, name: 'cots-mario', url: '../cots-mario/', width: 1200, height: 800, paddingLeft: 480, cots: true, questions: FTG.Questions.COTS, questionsIntro: FTG.Questions.COTS_INTRO, hasRest: false, params: {profile: 'C1'}, instructions: this.MARIO_INSTRUCTIONS}
-     ];
-
-     this.mCOTSSorting = [
-         4, 5, 6, 7, 8, 9, 10
      ];
 
      this.mGamesSorting = [
-        /* 0 */ [1, 2, 3].concat(this.mCOTSSorting),
-        /* 1 */ [1, 3, 2].concat(this.mCOTSSorting),
-        /* 2 */ [2, 1, 3].concat(this.mCOTSSorting),
-        /* 3 */ [2, 3, 1].concat(this.mCOTSSorting),
-        /* 4 */ [3, 2, 1].concat(this.mCOTSSorting),
-        /* 5 */ [3, 1, 2].concat(this.mCOTSSorting)
+        /* 0 */ [1, 2, 3],
+        /* 1 */ [1, 3, 2],
+        /* 2 */ [2, 1, 3],
+        /* 3 */ [2, 3, 1],
+        /* 4 */ [3, 2, 1],
+        /* 5 */ [3, 1, 2]
      ];
      this.mSorting;
 
@@ -152,7 +127,7 @@ FTG.Experiment.prototype.greetings = function() {
             '<h1>Instructions</h1>' +
             '<p>User: ' + this.mUid + '</p>' +
             '<p>Welcome! Please wait the researcher let you know when to start.<br/>When you are told to start, click the "Start" button below.<br /><br />Thank you for being part of this research!</p>' +
-            '<button id="start">Start</button> <button id="heart">HR watch</button>' +
+            '<button id="start">Start</button>' +
         '</div>'
     );
 
@@ -160,15 +135,12 @@ FTG.Experiment.prototype.greetings = function() {
         aSelf.startNewGame();
     });
 
-    $('#heart').click(function() {
-        aSelf.mData.logMilestone(aSelf.mUid, -1, 'experiment_hr_start');
-        aSelf.playBipSound();
-        $(this).hide();
+    aSelf.mData.logMilestone(aSelf.mUid, -1, 'experiment_hr_start');
+    aSelf.playBipSound();
 
-        // try to protect the experiment against unintended user actions
-        // that will terminate the experiment, e.g. page refresh
-        aSelf.preventAbruptSessionEnd();
-    });
+    // try to protect the experiment against unintended user actions
+    // that will terminate the experiment, e.g. page refresh
+    aSelf.preventAbruptSessionEnd();
 
     // Play the bip sound to indicate everything is set.
     this.playBipSound();

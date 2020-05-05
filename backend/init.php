@@ -6,9 +6,15 @@
 
 require_once(dirname(__FILE__) . '/config.php');
 
-$aDb = new PDO('sqlite:' . DB_FILE);
+if(file_exists(DB_FILE_PATH)) {
+    echo 'Database file already exists: <code>' . DB_FILE_PATH . '</code>';
+    exit(1);
+}
+
+$aDb = new PDO('sqlite:' . DB_FILE_PATH);
 $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+$aDb->query('CREATE TABLE subjects (id INTEGER PRIMARY KEY, uuid VARCHAR(36), created_at INTEGER)');
 $aDb->query('CREATE TABLE logs (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(36), data TEXT)');
 $aDb->query('CREATE TABLE questionnaires (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(36), data TEXT)');
 $aDb->query('CREATE TABLE games (id PRIMARY KEY, name VARCHAR(100))');

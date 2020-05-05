@@ -15,6 +15,7 @@
         '<li><img src="../img/keys/right.png" title="Right arrow" class="key" /> <p><strong>MOVE right</strong></p></li>';
 
      this.mUid;
+     this.mUser;
      this.mCurrentGame;
      this.mRestTime = 2.3; // in minutes
      this.mDebug;
@@ -68,7 +69,8 @@ FTG.Experiment.instance = null;
 // Methods
 
 FTG.Experiment.prototype.init = function() {
-    this.mUid = FTG.Utils.getURLParamByName('user');
+    this.mUid = FTG.Utils.getURLParamByName('uid');
+    this.mUser = FTG.Utils.getURLParamByName('user');
 
     this.mCurrentGame = -1; // TODO: get from URL.
     this.mRestTime = FTG.Utils.getURLParamByName('rest') || this.mRestTime;
@@ -76,7 +78,7 @@ FTG.Experiment.prototype.init = function() {
     this.mBipSound = document.getElementById('bip');
     this.mTanSound = document.getElementById('tan');
     this.mCalmSound = document.getElementById('calm');
-    this.mSorting = this.mUid ? (this.mUid % this.mGamesSorting.length) : 0;
+    this.mSorting = this.mUser ? (this.mUser % this.mGamesSorting.length) : 0;
     this.mFinished = false;
 
     this.mData = new FTG.Collector(this.mDebug);
@@ -92,7 +94,7 @@ FTG.Experiment.prototype.init = function() {
     console.log('[Experiment] Init with user uid:' + this.mUid + ', rest: ' + this.mRestTime + 'ms, sorting: ' + this.mSorting + ' [' + this.mGamesSorting[this.mSorting].join(',') + ']');
 
     if(this.mUid == null) {
-        alert('User id not informed! Append ?user=DDD to the URL.');
+        alert('User id not informed! Append ?uid=DDD to the URL.');
     } else {
         this.greetings();
     }

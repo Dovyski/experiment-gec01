@@ -39,6 +39,7 @@ try {
         $aHit = urlencode(base64_encode(str_repeat($aUuid, 6)));
 
         header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&t=' . time());
+        exit();
     }
 } catch(Exception $e) {
 	$aError = $e->getMessage();
@@ -48,9 +49,11 @@ try {
 <!doctype html>
 <html lang="<?php echo $aLocale ?>">
 <head>
-	<meta charset="UTF-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title><?php echo config('title', $aLocale) ?> | Olen</title>
-    
+
     <?php if(config('ga')) { ?>
         <!-- Google Analytics -->
         <script>
@@ -65,19 +68,39 @@ try {
         <!-- End Google Analytics -->
     <?php } ?>
 
-	<link href="./css/style.css" rel="stylesheet">
+    <!-- Styles -->
+	<link href="../css/style.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 </head>
 <body>
-    <h1><?php echo lang('welcome') ?><h2>
-    <p><?php echo config('description', $aLocale) ?></p>
+    <div class="flex-center position-ref full-height">
+        <div class="content">
+            <div class="title m-b-md">
+                <?php echo lang('welcome') ?>
+            </div>
+            <div class="m-b-md">
+                <p><?php echo config('description', $aLocale) ?></p>
 
-    <?php if(!empty($aError)) { ?>
-        <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
-    <?php } ?>
+                <?php if(!empty($aError)) { ?>
+                    <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
+                <?php } ?>
 
-    <form action="./?locale='.<?php echo $aLocale ?>.'&start=<?php echo time() ?>" method="post">
-        <button><?php echo lang('continue') ?></button>
-    </form>
+                <form action="./?locale='.<?php echo $aLocale ?>.'&start=<?php echo time() ?>" method="post" class="m-t-md" id="welcome-form">
+                    <button type="submit" class="welcome ld-ext-right" onclick="this.classList.add('running'); this.disabled=true; document.getElementById('welcome-form').submit();">
+                        <?php echo lang('continue') ?><div class="ld ld-ring ld-spin"></div>
+                    </button>
+                </form>
+
+                <p id="mobile-warning"><?php echo lang('mobile') ?></p>
+            </div>
+
+            <div class="footer m-b-md">
+                <p><?php echo config('footer', $aLocale) ?></p>
+            </div>
+        </div>
+    </div>
 
     <!-- prefetch everything we need -->
 	<script type="text/javascript" src="../js/3rdparty/jquery-2.2.0.min.js"></script>
@@ -87,8 +110,8 @@ try {
 	<script type="text/javascript" src="../js/ftg.questions.cots.js"></script>
 	<script type="text/javascript" src="../js/ftg.questions.game.js"></script>
 	<script type="text/javascript" src="../js/ftg.questions.user.js"></script>
-	<audio id="bip" src="./sfx/bip.mp3" volume="1.0">There is a problem with the bip sound in the experiment.</audio>
-	<audio id="tan" src="./sfx/tan.mp3" volume="1.0">There is a problem with the tan sound in the experiment.</audio>
-	<audio id="calm" src="./sfx/calm.mp3" volume="0.8" loop="true">There is a problem with the calm sound in the experiment.</audio>
+	<audio id="bip" src="../experiment/sfx/bip.mp3" volume="1.0">There is a problem with the bip sound in the experiment.</audio>
+	<audio id="tan" src="../experiment/sfx/tan.mp3" volume="1.0">There is a problem with the tan sound in the experiment.</audio>
+    <audio id="calm" src="../experiment/sfx/calm.mp3" volume="0.8" loop="true">There is a problem with the calm sound in the experiment.</audio>
 </body>
 </html>

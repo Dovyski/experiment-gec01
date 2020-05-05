@@ -1,0 +1,28 @@
+;
+; Experiment configuration file for Olen
+;
+
+; Unique identifier for this experiment
+id=1
+
+; Default language for this experiment
+locale=pt
+
+; UA-XXXXX-Y
+ga=
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                         ;
+;                        Locales                          ;
+;                                                         ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[pt]
+
+title=Título do experimento
+description=descrição do experiment
+
+[en]
+
+title=en experiment title
+description=en experiment description

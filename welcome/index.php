@@ -6,6 +6,7 @@
  */
 
 require_once(dirname(__FILE__) . '/../backend/config.php');
+require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 
 $aDb = new PDO('sqlite:' . DB_FILE_PATH);
 $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -38,24 +39,44 @@ try {
 } catch(Exception $e) {
 	$aError = $e->getMessage();
 }
+
+$aLocale = config('locale');
+$aTitle = config('title', $aLocale);
+$aDescription = config('description', $aLocale);
+
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="<?php echo config('locale'); ?>">
 <head>
 	<meta charset="UTF-8" />
-	<title>Welcome</title>
+    <title><?php echo $aTitle ?> | Olen</title>
+    
+    <?php if(config('ga')) { ?>
+        <!-- Google Analytics -->
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '<?php echo config('ga') ?>', 'auto');
+        ga('send', 'pageview');
+        </script>
+        <!-- End Google Analytics -->
+    <?php } ?>
+
 	<link href="./css/style.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Welcome<h2>
-    <p>Text something</p>
+    <h1><?php echo lang('welcome') ?><h2>
+    <p><?php echo $aDescription ?></p>
 
     <?php if(!empty($aError)) { ?>
-        <p>Oops, something wrong just happended: <?php echo $aError ?></p>
+        <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
     <?php } ?>
 
     <form action="./?start=<?php echo time() ?>" method="post">
-        <button>Submit</button>
+        <button><?php echo lang('continue') ?></button>
     </form>
 
     <!-- prefetch everything we need -->

@@ -1,5 +1,44 @@
 <?php
 
+function config($theKey = '', $theSection = '') {
+    global $gIniExperiment;
+
+    if(empty($theKey)) {
+        return $gIniExperiment;
+    }
+
+    $aStore = $gIniExperiment;
+
+    if(!empty($theSection)) {
+        if(!isset($aStore[$theSection])) {
+            echo 'Unknown config section: ' . $theSection;
+            exit(5);
+        }
+        $aStore = $aStore[$theSection];
+    }
+    
+    if(!isset($aStore[$theKey])) {
+        echo 'Unknown config key: ' . $theKey;
+        exit(5);
+    }
+
+    $aValue = $aStore[$theKey];
+    return $aValue;
+}
+
+function lang($theKey, $theLocale = '') {
+    global $gIniLang;
+
+    if(empty($theLocale)) {
+        $theLocale = config('locale');
+    }
+
+    $aTexts = isset($gIniLang[$theLocale]) ? $gIniLang[$theLocale] : $gIniLang['en'];
+    $aPiece = isset($aTexts[$theKey]) ? $aTexts[$theKey] : '???';
+    
+    return $aPiece;
+}
+
 // Get info about all games (name, id, etc)
 function findGames($thePDO) {
     $aGames = array();

@@ -103,7 +103,7 @@ try {
                     <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
                 <?php } ?>
 
-                <form action="./?locale='.<?php echo $aLocale ?>.'&start=<?php echo time() ?>" method="post" class="m-t-md" id="welcome-form">
+                <form action="./?locale=<?php echo $aLocale ?>&start=<?php echo time() ?>" method="post" class="m-t-md" id="welcome-form">
                     <button type="submit" class="welcome ld-ext-right" onclick="this.classList.add('running'); this.disabled=true; document.getElementById('welcome-form').submit();">
                         <?php echo lang('continue') ?><div class="ld ld-ring ld-spin"></div>
                     </button>

@@ -6,7 +6,7 @@
 
  FTG.Questions = FTG.Questions || {};
 
- FTG.Questions.Game = [
+ FTG.Questions.Game_EN = [
      {
          text: 'On a scale from 1 to 5, how <em>bored</em> did you feel at the <em>beginning</em> of the game?',
          options: [
@@ -68,6 +68,85 @@
      },
      {
         text: 'Slide Did you understand how to play the game properly?',
-        slider: true
+        slider: true,
+        labels: {
+            arousal:'Level of arousal',
+            pleasure: 'Level of pleasure'
+        },
     },
  ];
+
+ FTG.Questions.Game_PT = [
+    {
+        text: 'PT On a scale from 1 to 5, how <em>bored</em> did you feel at the <em>beginning</em> of the game?',
+        options: [
+            {value: 1, label: '(Not bored at all)'},
+            {value: 2, label: ''},
+            {value: 3, label: ''},
+            {value: 4, label: ''},
+            {value: 5, label: '(Extremely bored)'}
+        ]
+    },
+    {
+        text: 'PT On a scale from 1 to 5, how <em>stressed</em> did you feel at the <em>beginning</em> of the game?',
+        options: [
+            {value: 1, label: '(Not stressed at all)'},
+            {value: 2, label: ''},
+            {value: 3, label: ''},
+            {value: 4, label: ''},
+            {value: 5, label: '(Extremely stressed)'}
+        ]
+    },
+    {
+        text: 'PT On a scale from 1 to 5, how <em>bored</em> did you feel at the <em>end</em> of the game?',
+        options: [
+            {value: 1, label: '(Not bored at all)'},
+            {value: 2, label: ''},
+            {value: 3, label: ''},
+            {value: 4, label: ''},
+            {value: 5, label: '(Extremely bored)'}
+        ]
+    },
+    {
+        text: 'PT On a scale from 1 to 5, how <em>stressed</em> did you feel at the <em>end</em> of the game?',
+        options: [
+            {value: 1, label: '(Not stressed at all)'},
+            {value: 2, label: ''},
+            {value: 3, label: ''},
+            {value: 4, label: ''},
+            {value: 5, label: '(Extremely stressed)'}
+        ]
+    },
+    {
+        text: 'PT Which part of the game would <em>best</em> describe the moment you enjoyed the most (e.g. had more fun)?',
+        options: [
+            {value: 1, label: '(Very beginning)'},
+            {value: 2, label: '(After beginning and before middle)'},
+            {value: 3, label: '(Middle)'},
+            {value: 4, label: '(After middle and before end)'},
+            {value: 5, label: '(Very end)'}
+        ]
+    },
+    {
+        text: 'PT Did you understand how to play the game properly?',
+        hide: true,
+        options: [
+            {value: 2, label: 'Yes'},
+            {value: 1, label: 'Yes, but I was a bit confused'},
+            {value: 0, label: 'No'}
+        ]
+    },
+    {
+       text: 'PT Slide Did you understand how to play the game properly?',
+       slider: true,
+       labels: {
+           arousal:'PT Level of arousal',
+           pleasure: 'PT Level of pleasure'
+       },
+   },
+];
+
+FTG.Questions.Game = {
+    en: FTG.Questions.Game_EN,
+    pt: FTG.Questions.Game_PT,
+};

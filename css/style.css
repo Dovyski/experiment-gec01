@@ -73,6 +73,11 @@ button.welcome.running {
     cursor: not-allowed;
 }
 
+p.small {
+    font-size: 0.7em;
+    color: #7d8285;
+}
+
 #mobile-warning {
     display: none;
 }

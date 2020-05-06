@@ -20,7 +20,7 @@
 FTG.Questionnaire.prototype.init = function() {
     var aSelf = this;
 
-    $('#' + this.mContainerId).append('<div id="ftg-questionnaire">' + this.render() + '<button id="ftg-btn-submit">Submit</button></div>');
+    $('#' + this.mContainerId).append('<div id="ftg-questionnaire">' + this.render() + '<button id="ftg-btn-submit">'+FTG.Utils.text('submit')+'</button></div>');
 
     $('#ftg-btn-submit').click(function() {
         aSelf.finish();
@@ -49,7 +49,7 @@ FTG.Questionnaire.prototype.render = function() {
             aContent += '<input type="text" name="t' + i + '" value="" />';
 
         } else if(aQuestion.slider) {
-            aContent += '<form class="AffectiveSlider"><div id="AffectiveSlider" style="width: 100%;">' + this.getASSlider('s' + i) + '</div></form>';
+            aContent += '<form class="AffectiveSlider"><div id="AffectiveSlider" style="width: 100%;">' + this.getASSlider('s' + i, aQuestion.labels) + '</div></form>';
         }
 
         aContent += '</div>';
@@ -59,9 +59,9 @@ FTG.Questionnaire.prototype.render = function() {
 };
 
 // Source: https://github.com/albertobeta/AffectiveSlider
-FTG.Questionnaire.prototype.getASSlider = function(thePrefix) {
-    var arousal_part = 'Level of arousal \n<div class="arousal"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_sleepy.svg"></object> \n<input type="range" name="' + thePrefix + 'a" id="' + thePrefix + 'a" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_wideawake.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object></div>';
-	var pleasure_part = 'Level of pleasure \n<div class="pleasure"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_unhappy.svg"></object> \n<input type="range" name="' + thePrefix + 'p" id="' + thePrefix + 'p" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_happy.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object> \n</div>';
+FTG.Questionnaire.prototype.getASSlider = function(thePrefix, theLabels) {
+    var arousal_part = theLabels.arousal + ' \n<div class="arousal"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_sleepy.svg"></object> \n<input type="range" name="' + thePrefix + 'a" id="' + thePrefix + 'a" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_wideawake.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object></div>';
+	var pleasure_part = theLabels.pleasure + ' \n<div class="pleasure"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_unhappy.svg"></object> \n<input type="range" name="' + thePrefix + 'p" id="' + thePrefix + 'p" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_happy.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object> \n</div>';
 
 	return arousal_part + pleasure_part;
 };

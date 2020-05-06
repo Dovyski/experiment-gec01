@@ -4,6 +4,8 @@
  * some data are collected (facial expressions, etc).
  */
 
+ var FTG_LOCALE = FTG.Utils.defineLocale(['en', 'pt']);
+
  var FTG = FTG || {};
 
  FTG.Experiment = function() {
@@ -19,10 +21,10 @@
      this.mCalmSound;
 
      this.mGames = [
-         {id: 1, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
-         {id: 2, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
-         {id: 3, name: 'tetrisc', url: '../tetrisc/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
-         {id: 4, name: 'platformerc', url: '../platformerc/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
+         {id: 1, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 2, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 3, name: 'tetrisc', url: '../tetrisc/', width: 600, height: 900, paddingLeft: 500, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 4, name: 'platformerc', url: '../platformerc/', width: 1200, height: 900, paddingLeft: 200, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
      ];
 
      this.mGamesSorting = [
@@ -54,6 +56,7 @@ FTG.Experiment.prototype.init = function() {
     this.mCalmSound = document.getElementById('calm');
     this.mSorting = this.mUser ? (this.mUser % this.mGamesSorting.length) : 0;
     this.mFinished = false;
+    this.mLocale = FTG_LOCALE;
 
     this.mData = new FTG.Collector(this.mDebug);
     this.mRestTime *= 60 * 1000;
@@ -77,7 +80,7 @@ FTG.Experiment.prototype.init = function() {
 FTG.Experiment.prototype.preventAbruptSessionEnd = function() {
     // Warn the user before leaving the page
     window.addEventListener("beforeunload", function(e) {
-        var aMessage = 'You did something that will stop the study before it is over. Please, click "Stay on this Page" to resume your study.';
+        var aMessage = FTG.Utils.text('beforeunload');
 
         e.preventDefault();
         e.returnValue = aMessage;
@@ -123,10 +126,10 @@ FTG.Experiment.prototype.greetings = function() {
 
     $('#info').html(
         '<div class="greetings">' +
-            '<h1>Instructions</h1>' +
-            '<p>User: ' + this.mUid + '</p>' +
-            '<p>Welcome! Please wait the researcher let you know when to start.<br/>When you are told to start, click the "Start" button below.<br /><br />Thank you for being part of this research!</p>' +
-            '<button id="start">Start</button>' +
+            '<h1>' + FTG.Utils.text('instructions') + '</h1>' +
+            '<p class="small">' + FTG.Utils.text('user') + ': ' + this.mUid + '</p>' +
+            '<p>' + FTG.Utils.text('welcomeInstructions') + '</p>' +
+            '<button id="start">' + FTG.Utils.text('start') + '</button>' +
         '</div>'
     );
 
@@ -181,7 +184,7 @@ FTG.Experiment.prototype.startNewGame = function() {
         if(this.mDebug) {
             var aSelf = this;
 
-            $('#info').append('<button id="conclude">Conclude</button>');
+            $('#info').append('<button id="conclude">' + FTG.Utils.text('conclude') + '</button>');
             $('#conclude').click(function() {
                 aSelf.concludeCurrentGame();
             });
@@ -238,7 +241,7 @@ FTG.Experiment.prototype.concludeCurrentQuestionnaire = function(theGameId, theD
 };
 
 FTG.Experiment.prototype.getGameQuestionsIntro = function(theGameInfo) {
-    var aIntro = 'Regarding the game you just played, please answer the questions below.';
+    var aIntro = FTG.Utils.text('pleaseAnswer');
 
     if(('questionsIntro' in theGameInfo) && theGameInfo.questionsIntro.length > 0) {
         aIntro = theGameInfo.questionsIntro;
@@ -263,7 +266,7 @@ FTG.Experiment.prototype.concludeCurrentGame = function() {
     $('#instructions').hide();
     $('#info').html(
         '<div class="questionnaire">' +
-            '<h2>Questions</h2>' +
+            '<h2>'+FTG.Utils.text('questions')+'</h2>' +
             '<p>' + aIntro + '</p>' +
             '<div id="questions" class="questions"></div>' +
         '</div>'
@@ -289,7 +292,7 @@ FTG.Experiment.prototype.rest = function() {
     this.mData.logMilestone(this.mUid, aGame.id, 'experiment_rest_start');
 
     this.enableCalmMusic(true);
-    $('#info').html('<div class="rest-container"><div><h1>Please, relax.</h1><p>Next game will start in a moment...</p></div></div>');
+    $('#info').html('<div class="rest-container"><div><h1>'+FTG.Utils.text('relax')+'</h1><p>'+FTG.Utils.text('nextGameSoon')+'</p></div></div>');
 
     aId = setInterval(function() {
         var aRemaining = aFuture - Date.now();
@@ -314,8 +317,8 @@ FTG.Experiment.prototype.finish = function() {
 
     $('#info').html(
         '<div class="questionnaire">' +
-            '<h2>Questions</h2>' +
-            '<p>Please tell us a bit about you.</p>' +
+            '<h2>'+FTG.Utils.text('questions')+'</h2>' +
+            '<p>'+FTG.Utils.text('aboutYou')+'</p>' +
             '<div id="questions" class="questions"></div>' +
         '</div>'
     );
@@ -334,7 +337,7 @@ FTG.Experiment.prototype.finish = function() {
 
 FTG.Experiment.prototype.sendSubjectHome = function() {
     console.log('[Experiment] The party is over! Last one to leave turn off the lights.');
-    $('#info').html('<div class="rest-container"><div><h1>The end!</h1><p>You are good to go. Thank you for helping us help you help us all! :)</p></div></div>');
+    $('#info').html('<div class="rest-container"><div><h1>'+FTG.Utils.text('end')+'</h1><p>'+FTG.Utils.text('endMessage')+'</p></div></div>');
 
     this.mData.logMilestone(this.mUid, -1, 'experiment_end');
     this.playBipSound();

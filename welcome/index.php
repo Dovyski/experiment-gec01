@@ -29,7 +29,7 @@ try {
             'created_at' => time()
         ];
 
-        $aSql = "INSERT INTO subjects (uuid, locale, created_at) VALUES (:uuid, :locale, :created_at)";
+        $aSql = "INSERT INTO subjects (uuid, locale, created_at, compleated_at) VALUES (:uuid, :locale, :created_at, 0)";
         $aStmt= $aDb->prepare($aSql);
         $aStmt->execute($aData);
 
@@ -38,6 +38,23 @@ try {
         $aHit = urlencode(base64_encode(str_repeat($aUuid, 6)));
 
         header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&t=' . time());
+        exit();
+    }
+
+    if(isset($_REQUEST['end']) && isset($_REQUEST['uuid'])) {
+        $aUuid = $_REQUEST['uuid'];
+
+        $aData = [
+            'uuid' => $aUuid,
+            'compleated_at' => time()
+        ];
+
+        $aSql = "UPDATE subjects SET compleated_at = :compleated_at WHERE uuid = :uuid";
+        $aStmt= $aDb->prepare($aSql);
+        $aStmt->execute($aData);
+
+        header('Content-type: application/json');
+        echo json_encode(array('success' => true));
         exit();
     }
 } catch(Exception $e) {

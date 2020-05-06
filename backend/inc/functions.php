@@ -12,9 +12,9 @@ function db($thePath = '') {
     $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if($aShouldInit) {
-        $aDb->query('CREATE TABLE subjects (id INTEGER PRIMARY KEY, uuid VARCHAR(36), locale VARCHAR(5), created_at INTEGER)');
-        $aDb->query('CREATE TABLE logs (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(36), data TEXT)');
-        $aDb->query('CREATE TABLE questionnaires (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(36), data TEXT)');
+        $aDb->query('CREATE TABLE subjects (id INTEGER PRIMARY KEY, uuid VARCHAR(64), locale VARCHAR(5), created_at INTEGER, compleated_at INTEGER)');
+        $aDb->query('CREATE TABLE logs (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(64), data TEXT)');
+        $aDb->query('CREATE TABLE questionnaires (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(64), data TEXT)');
         $aDb->query('CREATE TABLE games (id PRIMARY KEY, name VARCHAR(100))');
         $aDb->query('CREATE INDEX idx_logs_fk_game ON logs (fk_game)');
         $aDb->query('CREATE INDEX idx_questionnaire_fk_game ON questionnaires (fk_game)');

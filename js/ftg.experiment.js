@@ -338,6 +338,26 @@ FTG.Experiment.prototype.sendSubjectHome = function() {
 
     this.mData.logMilestone(this.mUid, -1, 'experiment_end');
     this.playBipSound();
+
+    this.markSubjectAsCompleated();
+};
+
+FTG.Experiment.prototype.markSubjectAsCompleated = function() {
+    $.ajax({
+        url: '../welcome/',
+        method: 'POST',
+        data: {
+            uuid: this.mUid,
+            end: true
+        },
+        dataType: 'json'
+    
+    }).done(function(theData) {
+        console.log('[Experiment] Subjected marked as compleated.');
+
+    }).fail(function(theXHR, theText) {
+        console.error('Something wrong: ' + theXHR.responseText, theXHR, theText);
+    });
 };
 
 FTG.Experiment.prototype.getGameById = function(theId) {

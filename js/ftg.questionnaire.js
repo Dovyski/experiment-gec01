@@ -47,12 +47,23 @@ FTG.Questionnaire.prototype.render = function() {
             }
         } else if(aQuestion.input) {
             aContent += '<input type="text" name="t' + i + '" value="" />';
+
+        } else if(aQuestion.slider) {
+            aContent += '<form class="AffectiveSlider"><div id="AffectiveSlider" style="width: 100%;">' + this.getASSlider('s' + i) + '</div></form>';
         }
 
         aContent += '</div>';
     }
 
     return aContent;
+};
+
+// Source: https://github.com/albertobeta/AffectiveSlider
+FTG.Questionnaire.prototype.getASSlider = function(thePrefix) {
+    var arousal_part = 'Level of arousal \n<div class="arousal"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_sleepy.svg"></object> \n<input type="range" name="' + thePrefix + 'a" id="' + thePrefix + 'a" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_wideawake.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object></div>';
+	var pleasure_part = 'Level of pleasure \n<div class="pleasure"> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_unhappy.svg"></object> \n<input type="range" name="' + thePrefix + 'p" id="' + thePrefix + 'p" value=".5" min="0" max="1" step=".01" /> \n<object class="arousal_svg" type="image/svg+xml" data="images/AS_happy.svg"></object> \n<object class="intensity_cue_svg" type="image/svg+xml" data="images/AS_intensity_cue.svg"></object> \n</div>';
+
+	return arousal_part + pleasure_part;
 };
 
 FTG.Questionnaire.prototype.finish = function() {
@@ -77,6 +88,12 @@ FTG.Questionnaire.prototype.finish = function() {
 
         } else if(aQuestion.input) {
             aAnswer = $('#ftg-questionnaire input:text[name="t' + i + '"]').val();
+            
+        } else if(aQuestion.slider) {
+            var aArousal = $('#ftg-questionnaire input[name="s' + i + 'a"]').val();
+            var aPleasure = $('#ftg-questionnaire input[name="s' + i + 'p"]').val();
+            aAnswer = aArousal + '|' + aPleasure;
+            aLabel = 'a|p';
         }
 
         if(aAnswer && aAnswer != '') {

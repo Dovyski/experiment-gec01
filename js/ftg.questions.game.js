@@ -66,4 +66,8 @@
              {value: 0, label: 'No'}
          ]
      },
+     {
+        text: 'Slide Did you understand how to play the game properly?',
+        slider: true
+    },
  ];

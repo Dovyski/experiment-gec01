@@ -10,7 +10,7 @@
      this.mUid;
      this.mUser;
      this.mCurrentGame;
-     this.mRestTime = 2.3; // in minutes
+     this.mRestTime = 1; // in minutes
      this.mDebug;
      this.mFinished;
      this.mData;
@@ -19,18 +19,17 @@
      this.mCalmSound;
 
      this.mGames = [
-         {id: 1, name: 'card-flipper', url: '../card-flipper/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
-         {id: 2, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
-         {id: 3, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
+         {id: 1, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
+         {id: 2, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
+         {id: 3, name: 'tetrisc', url: '../tetrisc/', width: 600, height: 900, paddingLeft: 500, cots: false, questions: FTG.Questions.Game, hasRest: true},
+         {id: 4, name: 'platformerc', url: '../platformerc/', width: 1200, height: 900, paddingLeft: 200, cots: false, questions: FTG.Questions.Game, hasRest: true},
      ];
 
      this.mGamesSorting = [
-        /* 0 */ [1, 2, 3],
-        /* 1 */ [1, 3, 2],
-        /* 2 */ [2, 1, 3],
-        /* 3 */ [2, 3, 1],
-        /* 4 */ [3, 2, 1],
-        /* 5 */ [3, 1, 2]
+        /* 0 */ [1, 2],
+        /* 1 */ [3, 4],
+        /* 2 */ [2, 1],
+        /* 3 */ [4, 3]
      ];
      this.mSorting;
 

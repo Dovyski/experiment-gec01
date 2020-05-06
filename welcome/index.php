@@ -11,8 +11,7 @@ require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 initLocale();
 
 $aLocale = config('locale');
-$aDb = new PDO('sqlite:' . DB_FILE_PATH);
-$aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$aDb = db();
 
 $aError = '';
 
@@ -104,10 +103,10 @@ try {
 
     <!-- prefetch everything we need -->
 	<script type="text/javascript" src="../js/3rdparty/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="../js/3rdparty/phaser.min.js"></script>
 	<script type="text/javascript" src="../js/ftg.utils.js"></script>
 	<script type="text/javascript" src="../js/ftg.collector.js"></script>
 	<script type="text/javascript" src="../js/ftg.questionnaire.js"></script>
-	<script type="text/javascript" src="../js/ftg.questions.cots.js"></script>
 	<script type="text/javascript" src="../js/ftg.questions.game.js"></script>
 	<script type="text/javascript" src="../js/ftg.questions.user.js"></script>
 	<audio id="bip" src="../experiment/sfx/bip.mp3" volume="1.0">There is a problem with the bip sound in the experiment.</audio>

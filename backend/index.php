@@ -13,8 +13,7 @@ $aGame 	 = isset($_REQUEST['game']) ? $_REQUEST['game'] : 0;
 $aMethod = isset($_REQUEST['method']) ? $_REQUEST['method'] : 'tracking';
 $aRet	 = array();
 
-$aDb = new PDO('sqlite:' . DB_FILE);
-$aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$aDb = db();
 
 try {
 	switch($aMethod) {

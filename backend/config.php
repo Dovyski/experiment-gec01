@@ -2,6 +2,8 @@
 
 define('DB_FILE','database.sqlite');
 define('DB_FILE_PATH', dirname(__FILE__) . '/' . DB_FILE);
+define('PER_USER_DB_FILE_PATH', dirname(__FILE__) . '/data');
+define('PER_USER_DB_FILE', '%s.sqlite');
 define('LANG_INI_FILE_PATH', dirname(__FILE__) . '/../i18n/texts.ini');
 define('EXPERIMENT_INI_FILE_PATH', dirname(__FILE__) . '/../experiment.ini');
 

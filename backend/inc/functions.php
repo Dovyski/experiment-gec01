@@ -1,10 +1,19 @@
 <?php
 
+function userdb($theUserId) {
+    $aUserId = empty($theUserId) ? 'empty' : $theUserId;
+    $aHash = md5($aUserId);
+    $aDbName = sprintf(PER_USER_DB_FILE, $aHash);
+    $aDbPath = PER_USER_DB_FILE_PATH . '/' . $aDbName;
+
+    return db($aDbPath);
+}
+
 function db($thePath = '') {
     $aPath = empty($thePath) ? DB_FILE_PATH : $thePath;
     $aShouldInit = false;
 
-    if(!file_exists(DB_FILE_PATH)) {
+    if(!file_exists($aPath)) {
         $aShouldInit = true;
     }
     
@@ -12,6 +21,7 @@ function db($thePath = '') {
     $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if($aShouldInit) {
+        $aDb->beginTransaction();
         $aDb->query('CREATE TABLE subjects (id INTEGER PRIMARY KEY, uuid VARCHAR(64), locale VARCHAR(5), created_at INTEGER, compleated_at INTEGER)');
         $aDb->query('CREATE TABLE logs (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(64), data TEXT)');
         $aDb->query('CREATE TABLE questionnaires (fk_game INTEGER, timestamp INTEGER, uuid VARCHAR(64), data TEXT)');
@@ -23,6 +33,7 @@ function db($thePath = '') {
         $aDb->query('INSERT INTO games (id, name) VALUES (2, \'Platformer\')');
         $aDb->query('INSERT INTO games (id, name) VALUES (3, \'TetrisC\')');
         $aDb->query('INSERT INTO games (id, name) VALUES (4, \'PlatformerC\')');
+        $aDb->commit();
     }
 
     return $aDb;

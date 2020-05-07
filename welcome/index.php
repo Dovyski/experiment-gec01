@@ -19,8 +19,8 @@ try {
     if(isset($_REQUEST['start'])) {
         $aUuid = uniqid();
 
-        if(strlen($aUuid) > 36) {
-            $aUuid = substr($aUuid, 0, 36);
+        if(strlen($aUuid) > 60) {
+            $aUuid = substr($aUuid, 0, 60);
         }
 
         $aData = [

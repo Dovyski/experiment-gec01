@@ -13,7 +13,7 @@ $aGame 	 = isset($_REQUEST['game']) ? $_REQUEST['game'] : 0;
 $aMethod = isset($_REQUEST['method']) ? $_REQUEST['method'] : 'tracking';
 $aRet	 = array();
 
-$aDb = db();
+$aDb = userdb($aUser);
 
 try {
 	switch($aMethod) {

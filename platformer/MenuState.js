@@ -10,13 +10,15 @@ var MenuState = function() {
 	this.mDialog = null;
 
 	this.create = function() {
+        var aLocale = GlobalInfo.locale || 'en';
+
 		this.mDialog		= Game.add.sprite(Game.world.centerX - 130, Game.world.centerY - 80, 'dialog-small');
 
 		this.mPlayBtn 		= Game.add.button(Game.world.centerX - 90, Game.world.centerY, 'blue-button', this.onPlay, this, 0, 1, 2);
-		this.mPlayLabel 	= Game.add.text(this.mPlayBtn.position.x + 60, this.mPlayBtn.position.y + 7, 'Play!', {fill: '#000', fontSize: 24});
+		this.mPlayLabel 	= Game.add.text(this.mPlayBtn.position.x + 60, this.mPlayBtn.position.y + 7, aLocale == 'pt' ? 'Jogar' : 'Play!', {fill: '#000', fontSize: 24});
 
 		// The id of this game if it has not been already
-		GlobalInfo.game = GlobalInfo.game || 3;
+		GlobalInfo.game = GlobalInfo.game || 2;
 		GlobalInfo.data.logMilestone(GlobalInfo.user, GlobalInfo.game, 'menu_start');
 	};
 

@@ -28,6 +28,7 @@ var aExperiment = window.parent.FTG ? window.parent.FTG.Experiment : {};
 // Get current user and game id from URL
 GlobalInfo.user = getURLParamByName('user');
 GlobalInfo.game = getURLParamByName('game');
+GlobalInfo.locale = getURLParamByName('locale') || 'en';
 
 // Are we running as part of an experiment?
 if(aExperiment && aExperiment.instance) {

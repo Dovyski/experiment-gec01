@@ -44,7 +44,7 @@ Game.MainMenu.prototype = {
 		this.titleimage.anchor.setTo(0.5,0);
 
 		// The id of this game if it has not been already
-		GlobalInfo.game = GlobalInfo.game || 2;
+		GlobalInfo.game = GlobalInfo.game || 1;
 		GlobalInfo.data.logMilestone(GlobalInfo.user, GlobalInfo.game, 'menu_start');
 	},
 

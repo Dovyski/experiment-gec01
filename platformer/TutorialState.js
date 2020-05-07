@@ -8,11 +8,17 @@ TutorialState = function() {
 		mTitle;
 
 	this.create = function() {
+        var locale = GlobalInfo.locale || 'en';
+        var translation = {
+            clickContinue: {en: 'Click anywhere to continue', pt: 'Clique em qualquer lugar para continuar'},
+            instructions: {en: 'Instructions', pt: 'Instruções'},
+        }
+
 		this.game.stage.backgroundColor = '#5FCDE4';
 
 		mFigure = this.game.add.sprite(0, 0, 'tutorial');
-		mTextClick = this.game.add.text(this.game.world.centerX, this.game.world.height - 150, "Click anywhere to continue", { font: "26px Arial", fill: "#ffffff", align: "center" });
-		mTitle = this.game.add.text(this.game.world.centerX, 50, "Instructions", { font: "Bold 40px Arial", fill: "#000", align: "center" });
+		mTextClick = this.game.add.text(this.game.world.centerX, this.game.world.height - 150, translation.clickContinue[locale], { font: "26px Arial", fill: "#ffffff", align: "center" });
+		mTitle = this.game.add.text(this.game.world.centerX, 50, translation.instructions[locale], { font: "Bold 40px Arial", fill: "#000", align: "center" });
 
 		mTextClick.anchor.setTo(0.5);
 		mTitle.anchor.setTo(0.5);

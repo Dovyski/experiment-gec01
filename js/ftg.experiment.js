@@ -146,6 +146,15 @@ FTG.Experiment.prototype.greetings = function() {
 
     // Play the bip sound to indicate everything is set.
     this.playBipSound();
+
+    if(ga) {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Experiment',
+            eventAction: 'greeting',
+            eventLabel: this.mUid
+        });
+    }
 };
 
 FTG.Experiment.prototype.generateGameURL = function(theGameInfo) {
@@ -187,6 +196,15 @@ FTG.Experiment.prototype.startNewGame = function() {
             $('#info').append('<button id="conclude">' + FTG.Utils.text('conclude') + '</button>');
             $('#conclude').click(function() {
                 aSelf.concludeCurrentGame();
+            });
+        }
+
+        if(ga) {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'Experiment',
+                eventAction: 'startGame',
+                eventLabel: aGame.name + ' (id=' + aGame.id + ', num=' + this.mCurrentGame + ')'
             });
         }
     } else {
@@ -238,6 +256,15 @@ FTG.Experiment.prototype.concludeCurrentQuestionnaire = function(theGameId, theD
         // TODO: show some user friendly messages?
         console.error('Something wrong: ' + theXHR.responseText, theXHR, theText);
     });
+
+    if(ga) {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Experiment',
+            eventAction: 'answeredQuestionnaire',
+            eventLabel: 'game ' + theGameId
+        });
+    }
 };
 
 FTG.Experiment.prototype.getGameQuestionsIntro = function(theGameInfo) {
@@ -280,6 +307,15 @@ FTG.Experiment.prototype.concludeCurrentGame = function() {
         this.concludeCurrentQuestionnaire,
         this
     );
+
+    if(ga) {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Experiment',
+            eventAction: 'concludedGame',
+            eventLabel: aGame.name + ' (id=' + aGame.id + ')'
+        });
+    }
 };
 
 FTG.Experiment.prototype.rest = function() {
@@ -361,6 +397,15 @@ FTG.Experiment.prototype.markSubjectAsCompleated = function() {
     }).fail(function(theXHR, theText) {
         console.error('Something wrong: ' + theXHR.responseText, theXHR, theText);
     });
+
+    if(ga) {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Experiment',
+            eventAction: 'completed',
+            eventLabel: this.mUid
+        });
+    }
 };
 
 FTG.Experiment.prototype.getGameById = function(theId) {

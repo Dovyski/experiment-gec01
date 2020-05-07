@@ -20,4 +20,5 @@ jobs:
         password: ${{ secrets.PROD_PASSWORD }}
         script: |
           cd ${{ env.PROD_WEB_DIRECTORY }}
-          git pull
+          git fetch origin master
+          git reset --hard origin/master

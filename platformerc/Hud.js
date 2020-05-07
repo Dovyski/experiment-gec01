@@ -24,17 +24,24 @@ Hud.prototype.constructor = Hud;
 // Public methods
 
 Hud.prototype.init = function() {
+    var aLocale = GlobalInfo.locale || 'en';
+    var aTranslation = {
+        jump: {en: 'Jump', pt: 'Pular'},
+        slide: {en: 'Slide', pt: 'Deslizar'},
+        score: {en: 'score', pt: 'pontos'}
+    }
+
     mKeyUpIcon = new Phaser.Sprite(this.game, 10, 5, 'key-up');
-    mKeyUpText = new Phaser.Text(this.game, mKeyUpIcon.x + mKeyUpIcon.width + 5, mKeyUpIcon.y + 5, "Jump", { font: "Bold 24px Arial", fill: "#000", align: "center" });
+    mKeyUpText = new Phaser.Text(this.game, mKeyUpIcon.x + mKeyUpIcon.width + 5, mKeyUpIcon.y + 5, aTranslation.jump[aLocale], { font: "Bold 24px Arial", fill: "#000", align: "center" });
     mKeyDashIcon = new Phaser.Sprite(this.game, mKeyUpText.x + mKeyUpText.width + 30, mKeyUpIcon.y, 'key-s');
-    mKeyDashText = new Phaser.Text(this.game, mKeyDashIcon.x + mKeyDashIcon.width + 5, mKeyUpText.y, "Slide", { font: "Bold 24px Arial", fill: "#000", align: "center" });
+    mKeyDashText = new Phaser.Text(this.game, mKeyDashIcon.x + mKeyDashIcon.width + 5, mKeyUpText.y, aTranslation.slide[aLocale], { font: "Bold 24px Arial", fill: "#000", align: "center" });
 
     mHealthBar  = new ProgressBar(this.game.width * 0.7, 25, 210, 20, {line: 0xAA3030, fill: 0xC83E3E});
     mHealthIcon = new Phaser.Sprite(this.game, -30, -8, 'heart');
     mHealthBar.addChild(mHealthIcon);
 
-    mScoreLabel = new Phaser.Text(this.game, mHealthBar.x + 235, mHealthBar.y - 20, "score", { font: "Bold 18px Arial", fill: "#9E0000", align: "center" });
-    mScore = new Phaser.Text(this.game, mScoreLabel.x - 10, mScoreLabel.y + 15, "0000", { font: "Bold 32px Arial", fill: "#D60000", align: "center" });
+    mScoreLabel = new Phaser.Text(this.game, mHealthBar.x + 225, mHealthBar.y - 20, aTranslation.score[aLocale], { font: "Bold 18px Arial", fill: "#9E0000", align: "center" });
+    mScore = new Phaser.Text(this.game, mScoreLabel.x - 3, mScoreLabel.y + 15, "0000", { font: "Bold 32px Arial", fill: "#D60000", align: "center" });
 
     this.add(mKeyUpIcon);
     this.add(mKeyUpText);

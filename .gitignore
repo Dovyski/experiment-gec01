@@ -1,3 +1,2 @@
 /backend/*.sqlite
-/experiment.ini
 /backend/data/*.sqlite

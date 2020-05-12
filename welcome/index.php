@@ -37,19 +37,21 @@ try {
         $aExperimentUserId = $aSubjectDbId . '' . $aUuid;
         $aHit = urlencode(base64_encode(str_repeat($aUuid, 6)));
 
-        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&t=' . time());
+        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&cid=' . $aUuid . '&t=' . time());
         exit();
     }
 
-    if(isset($_REQUEST['end']) && isset($_REQUEST['uuid'])) {
+    if(isset($_REQUEST['end']) && isset($_REQUEST['uuid']) && isset($_REQUEST['user'])) {
         $aUuid = $_REQUEST['uuid'];
+        $aUserDbId = $_REQUEST['user'];
 
         $aData = [
+            'id' => $aUserDbId,
             'uuid' => $aUuid,
             'compleated_at' => time()
         ];
 
-        $aSql = "UPDATE subjects SET compleated_at = :compleated_at WHERE uuid = :uuid";
+        $aSql = "UPDATE subjects SET compleated_at = :compleated_at WHERE id = :id AND uuid = :uuid";
         $aStmt= $aDb->prepare($aSql);
         $aStmt->execute($aData);
 

@@ -386,7 +386,8 @@ FTG.Experiment.prototype.markSubjectAsCompleated = function() {
         url: '../welcome/',
         method: 'POST',
         data: {
-            uuid: this.mUid,
+            user: this.mUser,
+            uuid: FTG.Utils.getURLParamByName('cid'),
             end: true
         },
         dataType: 'json'

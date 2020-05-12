@@ -30,6 +30,11 @@ GlobalInfo.user = getURLParamByName('user');
 GlobalInfo.game = getURLParamByName('game');
 GlobalInfo.locale = getURLParamByName('locale') || 'en';
 
+if(['pt', 'en'].indexOf(GlobalInfo.locale) == -1) {
+    // Invalid locale, use default then
+    GlobalInfo.locale = 'en';
+}
+
 // Are we running as part of an experiment?
 if(aExperiment && aExperiment.instance) {
 	// Yes, we are. In this case, we adjust

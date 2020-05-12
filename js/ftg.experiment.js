@@ -363,7 +363,7 @@ FTG.Experiment.prototype.finish = function() {
         'questions',
         this.mUid,
         -1, // no game
-        FTG.Questions.User,
+        FTG.Questions.User[FTG_LOCALE],
         this.concludeCurrentQuestionnaire,
         this
     );

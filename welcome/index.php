@@ -36,8 +36,9 @@ try {
         $aSubjectDbId = $aDb->lastInsertId();
         $aExperimentUserId = $aSubjectDbId . '' . $aUuid;
         $aHit = urlencode(base64_encode(str_repeat($aUuid, 6)));
+        $aAppend = config('url_append');
 
-        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&cid=' . $aUuid . '&t=' . time());
+        header('Location: ../experiment/?hit='.$aHit.'&user='.$aSubjectDbId.'&locale='.$aLocale.'&uid=' . $aExperimentUserId . '&cid=' . $aUuid . '&t=' . time() . '&' . $aAppend);
         exit();
     }
 
@@ -93,17 +94,22 @@ try {
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 </head>
 <body>
-    <div class="flex-center position-ref full-height">
-        <div class="content">
-            <div class="title m-b-md">
+    <div class="flex-center position-ref">
+        <div class="welcome-content">
+            <div class="title m-b-sm">
                 <?php echo lang('welcome') ?>
             </div>
-            <div class="m-b-md">
-                <p><?php echo config('description', $aLocale) ?></p>
-
+            <div class="subtitle m-b-md">
+                <?php echo config('title', $aLocale) ?>
+            </div>
+            <div class="m-b-md m-t-md">
+                
                 <?php if(!empty($aError)) { ?>
                     <p><?php echo lang('something_wrong') ?>: <?php echo $aError ?></p>
                 <?php } ?>
+                    
+                <p><?php echo config('description', $aLocale) ?></p>
+                <p class="eula m-t-md"><?php echo config('eula', $aLocale) ?></p>
 
                 <form action="./?locale=<?php echo $aLocale ?>&start=<?php echo time() ?>" method="post" class="m-t-md" id="welcome-form">
                     <button type="submit" class="welcome ld-ext-right" onclick="this.classList.add('running'); this.disabled=true; document.getElementById('welcome-form').submit();">

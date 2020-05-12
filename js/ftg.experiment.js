@@ -369,6 +369,9 @@ FTG.Experiment.prototype.finish = function() {
     );
 
     this.mFinished = true;
+
+    // Scroll to top
+    window.scrollTo(0, 0);
 };
 
 FTG.Experiment.prototype.sendSubjectHome = function() {

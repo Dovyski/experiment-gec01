@@ -12,7 +12,7 @@ TutorialState = function() {
         mTextInstructionJumpKey;
 
 	this.create = function() {
-        var aLocale = GlobalInfo.locale || 'en';
+        var aLocale = GlobalInfo.locale;
         var aTranslation = {
             clickContinue: {en: 'Click anywhere to continue', pt: 'Clique em qualquer lugar para continuar'},
             instructions: {en: 'Instructions', pt: 'Instruções'},
@@ -22,17 +22,17 @@ TutorialState = function() {
             instructionJump: {en: '', pt: 'para pular sobre obstáculos'},
         }
 
-		this.game.stage.backgroundColor = '#5FCDE4';
+		this.game.stage.backgroundColor = '#00D8FF';
 
 		mFigure = this.game.add.sprite(0, 0, 'tutorial');
 		mTextClick = this.game.add.text(this.game.world.centerX, this.game.world.height - 150, aTranslation.clickContinue[aLocale], { font: "26px Arial", fill: "#ffffff", align: "center" });
         mTitle = this.game.add.text(this.game.world.centerX, 50, aTranslation.instructions[aLocale], { font: "Bold 40px Arial", fill: "#000", align: "center" });
         
-        mTextInstructionDash = this.game.add.text(205, 210, aTranslation.instructionDash[aLocale], { font: "22px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, backgroundColor: '#26C9FF', align: "left" });
-        mTextInstructionDashKey = this.game.add.text(205, 170, aTranslation.instructionDashKey[aLocale], { font: "30px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, backgroundColor: '#26C9FF', align: "left" });
+        mTextInstructionDash = this.game.add.text(205, 210, aTranslation.instructionDash[aLocale], { font: "22px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, align: "left" });
+        mTextInstructionDashKey = this.game.add.text(205, 170, aTranslation.instructionDashKey[aLocale], { font: "30px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, align: "left" });
 
-        mTextInstructionJump = this.game.add.text(690, 210, aTranslation.instructionJump[aLocale], { font: "22px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, backgroundColor: '#26C9FF', align: "left" });
-        mTextInstructionJumpKey = this.game.add.text(690, 170, aTranslation.instructionJumpKey[aLocale], { font: "30px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, backgroundColor: '#26C9FF', align: "left" });
+        mTextInstructionJump = this.game.add.text(690, 210, aTranslation.instructionJump[aLocale], { font: "22px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, align: "left" });
+        mTextInstructionJumpKey = this.game.add.text(690, 170, aTranslation.instructionJumpKey[aLocale], { font: "30px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 3, align: "left" });
 
 		mTextClick.anchor.setTo(0.5);
 		mTitle.anchor.setTo(0.5);

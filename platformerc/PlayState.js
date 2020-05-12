@@ -20,7 +20,7 @@ PlayState = function() {
 		};
 
 	this.create = function() {
-		this.game.stage.backgroundColor = '#5FCDE4';
+		this.game.stage.backgroundColor = '#00D8FF';
 
 		// Init physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);

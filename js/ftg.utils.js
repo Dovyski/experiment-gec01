@@ -59,8 +59,20 @@ FTG.Utils.text = function(key, locale) {
         instructions: {en: 'Instructions', pt: 'Instruções'},
         user: {en: 'User', pt: 'Usuário'},
         welcomeInstructions: {
-            en: 'Welcome! Please wait the researcher let you know when to start.<br/>When you are told to start, click the "Start" button below.<br /><br />Thank you for being part of this research!',
-            pt: 'pt Welcome! Please wait the researcher let you know when to start.<br/>When you are told to start, click the "Start" button below.<br /><br />Thank you for being part of this research!'
+            en:
+                'Before you begin, please, observe the following:<br/><br />' + 
+                '<img src="images/technology.svg" class="guidance" /> Turn off or put your mobile device on airplain mode. <br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Play the games, answer the questionnaire after each game and rest as instructed on the screen.<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Don\'t give up in the middle of the games (play them until the end).<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Remain seated during the whole process.<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Your gaming performance is not being analyzed.<br /><br />',
+            pt: 
+                'Antes de começar, por favor, preste atenção no seguinte:<br/><br />' + 
+                '<img src="images/technology.svg" class="guidance" /> Deslige ou coloque seu celular em modo avião. <br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Jogue os jogos, responda o questionário após cada jogo e descanse conforme instruído na tela.<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Não desista no meio dos jogos (jogue-os até o final).<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Permaneça sentado(a) durante todo o processo.<br /><br />' +
+                '<img src="images/info.svg" class="guidance" /> Seu desempenho nos jogos não está sendo analizada.<br /><br />'
         },
         start: {en: 'Start', pt: 'Iniciar'},
         conclude: {en: 'Conclude', pt: 'Concluir'},

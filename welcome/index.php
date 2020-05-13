@@ -88,7 +88,7 @@ try {
     <?php } ?>
 
     <!-- Styles -->
-	<link href="../css/style.css" rel="stylesheet">
+	<link href="../css/style.css?20200513" rel="stylesheet">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -109,7 +109,8 @@ try {
                 <?php } ?>
                     
                 <p><?php echo config('description', $aLocale) ?></p>
-                <p class="eula m-t-md"><?php echo config('eula', $aLocale) ?></p>
+                <p class="m-t-md eula"><?php echo nl2br(trim(config('eula', $aLocale))) ?></p>
+                <p class="m-t-md"><?php echo config('final_notice', $aLocale) ?></p>
 
                 <form action="./?locale=<?php echo $aLocale ?>&start=<?php echo time() ?>" method="post" class="m-t-md" id="welcome-form">
                     <button type="submit" class="welcome ld-ext-right" onclick="this.classList.add('running'); this.disabled=true; document.getElementById('welcome-form').submit();">

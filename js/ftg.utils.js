@@ -53,7 +53,7 @@ FTG.Utils.text = function(key, locale) {
         submit: {en: 'Submit', pt: 'Enviar'},
         beforeunload: {
             en: 'You did something that will stop the study before it is over. Please, click "Stay on this Page" to resume your study.',
-            pt: 'pt You did something that will stop the study before it is over. Please, click "Stay on this Page" to resume your study.',
+            pt: 'Você fez algo que interromperá o estudo antes que ele termine. Por favor, clique em "Permanecer nesta página" para retomar seu estudo.',
         },
         submit: {en: 'Submit', pt: 'Enviar'},
         instructions: {en: 'Instructions', pt: 'Instruções'},
@@ -78,7 +78,7 @@ FTG.Utils.text = function(key, locale) {
         conclude: {en: 'Conclude', pt: 'Concluir'},
         pleaseAnswer: {
             en: 'Regarding the game you just played, please answer the questions below.',
-            pt: 'PT Regarding the game you just played, please answer the questions below.'
+            pt: 'Em relação ao jogo que você recém jogou, por favor responda o questionário abaixo.'
         },
         questions: {en: 'Questions', pt: 'Questões'},
         relax: {en: 'Please, relax.', pt: 'Por favor, relaxe.'},
@@ -93,7 +93,7 @@ FTG.Utils.text = function(key, locale) {
         end: {en: 'The end!', pt: 'Fim!'},
         endMessage: {
             en: 'You are good to go. Thank you for helping us help you help us all! :)',
-            pt: 'PT You are good to go. Thank you for helping us help you help us all! :)'
+            pt: 'Você está liberado. Obrigado por nos ajudar a ajudar você a ajudar todos nós! :)'
         },
     };
 

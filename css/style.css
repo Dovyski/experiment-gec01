@@ -27,6 +27,7 @@ html, body {
     margin-top: 100px;
     text-align: center;
     width: 80%;
+    font-size: 1.2em;
 }
 
 .welcome-content p {
@@ -119,6 +120,7 @@ p.small {
         display: block;
         font-size: 1.1em;
         padding: 10px;
+        text-align: center;
     }
 }
 

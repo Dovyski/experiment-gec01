@@ -42,65 +42,6 @@ try {
 			$aRet['success'] = true;
 			break;
 
-		case 'experiments':
-			$aStmt = $aDb->prepare("SELECT uuid, timestamp FROM logs WHERE fk_game = -1 AND data LIKE '%experiment_hr_start%'");
-			$aStmt->execute();
-
-			$aData = array();
-
-			while($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
-				$aData[] = $aRow;
-			}
-
-			$aRet = array('success' => true, 'data' => $aData);
-			break;
-
-		case 'experiment':
-			ob_start();
-			$aGrouping = isset($_REQUEST['grouping']) ? $_REQUEST['grouping'] : 60;
-			$aData = getSubjectData($aDb, $aUser);
-			$aStats = crunchNumbers($aData, $aGrouping);
-			$aLog = ob_get_contents();
-			ob_end_clean();
-
-			$aStats['logs'] = $aLog;
-			$aStats['grouping'] = $aGrouping;
-
-			$aRet = array('success' => true, 'data' => $aStats);
-			break;
-
-		case 'monitor':
-			$aTime = time() - 30;
-
-			$aStmt = $aDb->prepare("SELECT * FROM logs WHERE uuid = :uuid AND timestamp >= :time");
-			$aStmt->bindParam(':uuid', $aUser);
-			$aStmt->bindParam(':time', $aTime);
-			$aStmt->execute();
-
-			$aData = array();
-
-			while($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
-				$aRow->data = json_decode($aRow->data);
-				$aData[] = $aRow;
-			}
-			$aRet = array('success' => true, 'data' => $aData);
-			break;
-
-		case 'active':
-			$aTime = time() - 60 * 40;
-
-			$aStmt = $aDb->prepare("SELECT * FROM logs WHERE fk_game = -1 AND timestamp >= :time AND data LIKE '%experiment_hr_start%'");
-			$aStmt->bindParam(':time', $aTime);
-			$aStmt->execute();
-
-			$aData = array();
-
-			while($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
-				$aData[] = $aRow;
-			}
-			$aRet = array('success' => true, 'data' => $aData);
-			break;
-
 		default:
 			throw new Exception('Unknow method "' .$aMethod. '"');
 	}

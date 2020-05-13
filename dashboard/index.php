@@ -11,10 +11,10 @@ require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 $aDb = db();
 
 $aIsAPI  = isset($_REQUEST['api']);
-$aUser      = isset($_REQUEST['user']) ? $_REQUEST['user'] : 0;
-$aGame      = isset($_REQUEST['game']) ? $_REQUEST['game'] : 0;
+$aUser   = isset($_REQUEST['user']) ? $_REQUEST['user'] : 0;
+$aGame   = isset($_REQUEST['game']) ? $_REQUEST['game'] : 0;
 $aMethod = isset($_REQUEST['method']) ? $_REQUEST['method'] : '';
-$aRet     = array();
+$aRet    = array();
 
 try {
     switch ($aMethod) {
@@ -38,6 +38,22 @@ try {
             $aStmt = $aDbUser->prepare("SELECT * FROM logs WHERE uuid = :uuid AND timestamp >= :time");
             $aStmt->bindParam(':uuid', $aUser);
             $aStmt->bindParam(':time', $aTime);
+            $aStmt->execute();
+
+            $aData = array();
+
+            while ($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
+                $aRow->data = json_decode($aRow->data);
+                $aData[] = $aRow;
+            }
+            $aRet = array('success' => true, 'data' => $aData);
+            break;
+
+        case 'experiment':
+            $aDbUser = userdb($aUser);
+
+            $aStmt = $aDbUser->prepare("SELECT * FROM logs WHERE uuid = :uuid");
+            $aStmt->bindParam(':uuid', $aUser);
             $aStmt->execute();
 
             $aData = array();
@@ -205,12 +221,12 @@ if ($aIsAPI) {
                                                 <span class="count_bottom"><i class="red" id="percent-count-subjects-invalid">3%</i> of total users</span>
                                             </div>
                                             <div class="col-md-2 col-sm-4  tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-flag"></i> Users pt_BR</span>
+                                                <span class="count_top"><img src="img/pt.png" title="pt_BR" style="height: 20px; width: auto;" /> Users</span>
                                                 <div class="count" id="count-subjects-pt">2500</div>
                                                 <span class="count_bottom"><i id="percent-count-subjects-pt">4% </i> of total users</span>
                                             </div>
                                             <div class="col-md-2 col-sm-4  tile_stats_count">
-                                                <span class="count_top"><i class="fa fa-flag"></i> Users en_US</span>
+                                                <span class="count_top"><img src="img/en.png" title="en_US" style="height: 20px; width: auto;" /> Users</span>
                                                 <div class="count" id="count-subjects-en">2500</div>
                                                 <span class="count_bottom"><i id="percent-count-subjects-en">4%</i> of total users</span>
                                             </div>
@@ -220,7 +236,6 @@ if ($aIsAPI) {
                                     <div class="row">
                                         <div class="col-md-12" style="padding: 10px;" id="data-area">
                                             Use the menu on the left to select data to visualize.
-                                            Click <strong><a href="javascript:void(0)" class="action-link" data-action="active">here</a></strong> to monitor any active session.
                                         </div>
                                     </div>
                                 </div>

@@ -37,7 +37,7 @@ APP.Main = function() {
         aOut =
             '<li>' +
                 '<a><i class="fa fa-bar-chart-o"></i> Subjects <span class="fa fa-chevron-down"></span></a>' +
-                '<ul class="nav child_menu">' +
+                '<ul class="nav child_menu" style="display:none;">' +
                     '<li><a href="javascript:void(0)" class="action-link" data-action="active">Active</a></li>' +
                 '</ul>' +
                 '<ul class="nav child_menu">' +
@@ -76,6 +76,7 @@ APP.Main = function() {
                 var isValid = aInfo.compleated_at != 0;
                 var aDateCreated = new Date(aInfo.created_at * 1000);
                 var aDateCompleated = new Date(aInfo.compleated_at * 1000);
+                var aSubjectId = aInfo.id + aInfo.uuid;
 
                 if(!aGroups[aInfo.locale]) {
                     aGroups[aInfo.locale] = [];
@@ -87,10 +88,11 @@ APP.Main = function() {
                 aRows +=
                     '<tr>' +
                         '<th scope="row">' + aInfo.id + '</th>' +
-                        '<td>' +
-                            '<a href="javascript:void(0)" data-subject="' + aInfo.uuid + '" class="subject-link">'+ aInfo.uuid +'</a>' +
-                        '</td>' +
-                        '<td>' + aInfo.locale + '</td>' +
+                        '<td>' + aInfo.uuid + '</th>' +
+                        '<th scope="row">' +
+                            '<a href="javascript:void(0)" data-subject="' + aSubjectId + '" class="subject-link">'+ aSubjectId +'</a>' +
+                        '</th>' +
+                        '<td><img src="img/' + aInfo.locale + '.png" title="Locale: ' + aInfo.locale + '" /></td>' +
                         '<td>' + aDateCreated.toISOString() + '</td>' +
                         '<td>' + (isValid ? aDateCompleated.toISOString() : '<span class="badge alert-danger">Still incomplete</span>') + '</td>' +
                     '</tr>';
@@ -102,6 +104,7 @@ APP.Main = function() {
                         '<tr>' +
                             '<th>Id</th>' +
                             '<th>UUID</th>' +
+                            '<th>SubjectID</th>' +
                             '<th>locale</th>' +
                             '<th>Created at</th>' +
                             '<th>Compleated at</th>' +
@@ -121,7 +124,7 @@ APP.Main = function() {
             }
 
             $('#data-area a.subject-link').click(function() {
-                aSelf.showExperimentData($(this).data('subject'));
+                aSelf.showSubjectData($(this).data('subject'));
             });
         });
     };
@@ -152,6 +155,29 @@ APP.Main = function() {
             });
 
             customUpdateSidebarMenu();
+        });
+    };
+
+    this.showSubjectData = function(theSubject) {
+        var aSelf = this;
+        this.subject = theSubject;
+       
+        $('#data-overview').hide();
+        $('#data-title').empty();
+        $('#data-area').empty().html('Loading data... <i class="fa fa-spin fa-circle-o-notch"></i>');
+
+        this.loadData({method: 'experiment', user: theSubject, grouping: this.grouping}, function(theData) {
+            if(theData.success) {
+                $('#data-title').html('Subject: ' + theSubject);
+                $('#data-area').empty();
+
+                var aJSON = JSON.stringify(theData.data, null, 2);
+
+                $('#data-area').html(aJSON);
+
+            } else {
+                $('#data-area').html('Something wrong');
+            }
         });
     };
 
@@ -196,6 +222,10 @@ APP.Main = function() {
         var aOut = '',
             aInfo,
             i;
+
+        if(theData.questionnaires.length == 0) {
+            return;
+        }
 
         aInfo = theData.questionnaires[3].data;
 

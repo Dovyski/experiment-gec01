@@ -48,16 +48,6 @@
          ]
      },
      {
-         text: 'Which part of the game would <em>best</em> describe the moment you enjoyed the most (e.g. had more fun)?',
-         options: [
-             {value: 1, label: '(Very beginning)'},
-             {value: 2, label: '(After beginning and before middle)'},
-             {value: 3, label: '(Middle)'},
-             {value: 4, label: '(After middle and before end)'},
-             {value: 5, label: '(Very end)'}
-         ]
-     },
-     {
          text: 'Did you understand how to play the game properly?',
          hide: true,
          options: [
@@ -67,7 +57,15 @@
          ]
      },
      {
-        text: 'Slide Did you understand how to play the game properly?',
+        text: 'Adjust the sliders below to best describe how you felt at the <em>beginning</em> of the game:',
+        slider: true,
+        labels: {
+            arousal:'Level of arousal',
+            pleasure: 'Level of pleasure'
+        },
+    },
+    {
+        text: 'Adjust the sliders below to best describe how you felt at the <em>end</em> of the game:',
         slider: true,
         labels: {
             arousal:'Level of arousal',
@@ -118,16 +116,6 @@
          ]
      },
      {
-         text: 'Qual parte do jogo <em>melhor</em> descreve o momento em que você se divertiu mais?',
-         options: [
-             {value: 1, label: '(Bem no início)'},
-             {value: 2, label: '(Depois do início e antes da metade)'},
-             {value: 3, label: '(O meio)'},
-             {value: 4, label: '(Depois da metade e antes do final)'},
-             {value: 5, label: '(Bem no final)'}
-         ]
-     },
-     {
          text: 'Você entendeu como jogar o jogo devidamente?',
          hide: true,
          options: [
@@ -137,7 +125,15 @@
          ]
      },
      {
-        text: 'Slide Você entendeu como jogar o jogo devidamente?',
+        text: 'Ajuste a barrinha abaixo para demonstrar da melhor forma como você se sentiu no <em>começo</em> do jogo:',
+        slider: true,
+        labels: {
+            arousal:'Level of arousal',
+            pleasure: 'Level of pleasure'
+        },
+    },
+    {
+        text: 'Ajuste a barrinha abaixo para demonstrar da melhor forma como você se sentiu no <em>final</em> do jogo:',
         slider: true,
         labels: {
             arousal:'Level of arousal',

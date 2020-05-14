@@ -125,7 +125,7 @@
          ]
      },
      {
-        text: 'Ajuste a barrinha abaixo para demonstrar da melhor forma como você se sentiu no <em>começo</em> do jogo:',
+        text: 'Ajuste as barrinhas abaixo para demonstrar da melhor forma como você se sentiu no <em>começo</em> do jogo:',
         slider: true,
         labels: {
             arousal:'Level of arousal',
@@ -133,7 +133,7 @@
         },
     },
     {
-        text: 'Ajuste a barrinha abaixo para demonstrar da melhor forma como você se sentiu no <em>final</em> do jogo:',
+        text: 'Ajuste as barrinhas abaixo para demonstrar da melhor forma como você se sentiu no <em>final</em> do jogo:',
         slider: true,
         labels: {
             arousal:'Level of arousal',

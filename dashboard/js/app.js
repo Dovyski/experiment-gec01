@@ -55,6 +55,11 @@ APP.Main = function() {
         aMonitor.run();
     };
 
+    this.getDateFromTimestamp = function(theTimestamp, theSeconds) {
+        var aDate = new Date(theTimestamp * (theSeconds ? 1000 : 1));
+        return aDate.toISOString();
+    }
+
     this.showOverview = function() {
         var aSelf = this;
 
@@ -151,7 +156,7 @@ APP.Main = function() {
             $('#sidebar-menu').append(aOut);
 
             $('#sidebar-menu a.subject-link').click(function() {
-                aSelf.showExperimentData($(this).data('subject'));
+                aSelf.showSubjectData($(this).data('subject'));
             });
 
             customUpdateSidebarMenu();
@@ -161,37 +166,16 @@ APP.Main = function() {
     this.showSubjectData = function(theSubject) {
         var aSelf = this;
         this.subject = theSubject;
-       
+
+        // Clear any previously existent experiment viewers
+        aSelf.viewers.length = 0;
+        
         $('#data-overview').hide();
         $('#data-title').empty();
         $('#data-area').empty().html('Loading data... <i class="fa fa-spin fa-circle-o-notch"></i>');
 
         this.loadData({method: 'experiment', user: theSubject, grouping: this.grouping}, function(theData) {
-            if(theData.success) {
-                $('#data-title').html('Subject: ' + theSubject);
-                $('#data-area').empty();
-
-                var aJSON = JSON.stringify(theData.data, null, 2);
-
-                $('#data-area').html(aJSON);
-
-            } else {
-                $('#data-area').html('Something wrong');
-            }
-        });
-    };
-
-    this.showExperimentData = function(theSubject) {
-        var aSelf = this;
-        this.subject = theSubject;
-
-        // Clear any previously existent experiment viewers
-        aSelf.viewers.length = 0;
-        $('#data-title').empty();
-        $('#data-area').empty().html('Loading data... <i class="fa fa-spin fa-circle-o-notch"></i>');
-
-        this.loadData({method: 'experiment', user: theSubject, grouping: this.grouping}, function(theData) {
-            var aViewer,
+            var aViewer = '',
                 i,
                 aGame,
                 aId,
@@ -201,17 +185,14 @@ APP.Main = function() {
                 $('#data-title').html('Subject: ' + theSubject);
                 $('#data-area').empty();
 
-                aSelf.showSubjectDemographicInfo('data-area', theData.data);
                 aGames = theData.data.games;
 
                 for(i = 0; i < aGames.length; i++) {
-                    aId = 'game' + i;
-                    $('#data-area').append('<div id="' + aId + '"></div>');
-
-                    aViewer = new APP.ExperimentViewer(i, theData.data);
-                    aSelf.viewers.push(aViewer);
-                    aViewer.init(aId);
+                    aSelf.showSubjectLogsByGame('data-area', theData.data, aGames[i]);
                 }
+
+                aSelf.showSubjectDemographicInfo('data-area', theData.data);
+
             } else {
                 $('#data-area').html('Something wrong');
             }
@@ -220,23 +201,66 @@ APP.Main = function() {
 
     this.showSubjectDemographicInfo = function(theContainerId, theData) {
         var aOut = '',
-            aInfo,
+            aInfo = [],
+            aHasDemographic = true,
             i;
 
         if(theData.questionnaires.length == 0) {
             return;
         }
 
-        aInfo = theData.questionnaires[3].data;
+        aHasDemographic = theData.questionnaires.length > theData.games.length;
 
+        if(aHasDemographic) {
+            aInfo = theData.questionnaires[theData.games.length + 1].data;
+        }
+
+        aOut += '<h2>Demographics</h2>';
         aOut += '<table border="1" class="demographics">';
         aOut += '<tr><th style="width: 70%;">Question</th><th style="width: 30%">Answer</th></tr>';
         for(i = 0; i < aInfo.length; i++) {
             aOut += '<tr><td>' + aInfo[i].q + '</td><td>' + aInfo[i].al + ' (' + aInfo[i].a + ')</td></tr>';
         }
+        if(aInfo.length == 0) {
+            aOut += '<tr><td colspan="2">This subject has no demographic data.</td></tr>';
+        }
         aOut += '</table>';
 
         $('#' + theContainerId).append('<div id="demographics">' + aOut + '</div>');
+    };
+
+    this.showSubjectLogsByGame = function(theContainerId, theData, theGame) {
+        var aOut = '',
+            aExtra = [],
+            aInfo,
+            aSelf = this,
+            i;
+
+        aOut += '<h2>' + theGame.name +'</h2>';
+        aOut += '<table border="1" class="demographics">';
+        aOut += '<tr><th style="width: 20%;">Game</th><th style="width: 20%;">Database time</th><th style="width: 60%">Log data</th></tr>';
+        for(i = 0; i < theData.logs.length; i++) {
+            aInfo = theData.logs[i];
+
+            if(aInfo.fk_game < 0) {
+                aExtra.push(aInfo);
+            }
+
+            if(aInfo.fk_game != theGame.id) {
+                continue;
+            }
+            
+            var aGameActions = [];
+
+            aInfo.data.map(function(entry) {
+                aGameActions.push(aSelf.getDateFromTimestamp(entry.t) + ': ' + entry.d);
+            });
+
+            aOut += '<tr><td>' + theGame.name + ' (id  ' + aInfo.fk_game + ')</td><td>' + this.getDateFromTimestamp(aInfo.timestamp, true) + '</td><td>' + aGameActions.join('<br />') + '</td></tr>';
+        }
+        aOut += '</table>';
+
+        $('#' + theContainerId).append('<div id="logs-' + theGame.id + '">' + aOut + '</div>');
     };
 
     this.getExperimentViewerByIndex = function(theIndex) {
@@ -270,7 +294,6 @@ APP.Main = function() {
 
         $('#grouping').on('change', function() {
             aSelf.grouping = $(this).val();
-            aSelf.showExperimentData(aSelf.subject);
         });
     }
 };

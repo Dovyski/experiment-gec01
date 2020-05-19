@@ -51,17 +51,26 @@ try {
 
         case 'experiment':
             $aDbUser = userdb($aUser);
+            $aData   = array('logs' => [], 'questionnaires' => [], 'games' => []);
 
-            $aStmt = $aDbUser->prepare("SELECT * FROM logs WHERE uuid = :uuid");
-            $aStmt->bindParam(':uuid', $aUser);
-            $aStmt->execute();
+            foreach($aData as $aType => $aValues) {
+                if($aType == 'games') {
+                    $aStmt = $aDbUser->prepare("SELECT * FROM games WHERE 1");
+                } else {
+                    $aStmt = $aDbUser->prepare("SELECT * FROM $aType WHERE uuid = :uuid");
+                    $aStmt->bindParam(':uuid', $aUser);
+                }
 
-            $aData = array();
-
-            while ($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
-                $aRow->data = json_decode($aRow->data);
-                $aData[] = $aRow;
+                $aStmt->execute();
+    
+                while ($aRow = $aStmt->fetch(PDO::FETCH_OBJ)) {
+                    if($aType != 'games') {
+                        $aRow->data = json_decode($aRow->data);
+                    }
+                    $aData[$aType][] = $aRow;
+                }
             }
+
             $aRet = array('success' => true, 'data' => $aData);
             break;
 

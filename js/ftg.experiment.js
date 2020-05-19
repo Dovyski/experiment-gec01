@@ -21,10 +21,10 @@
      this.mCalmSound;
 
      this.mGames = [
-         {id: 1, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 500, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
-         {id: 2, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 200, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
-         {id: 3, name: 'tetrisc', url: '../tetrisc/', width: 600, height: 900, paddingLeft: 500, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
-         {id: 4, name: 'platformerc', url: '../platformerc/', width: 1200, height: 900, paddingLeft: 200, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 1, name: 'tetris', url: '../tetris/', width: 600, height: 900, paddingLeft: 0, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 2, name: 'platformer', url: '../platformer/', width: 1200, height: 900, paddingLeft: 0, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 3, name: 'tetrisc', url: '../tetrisc/', width: 600, height: 900, paddingLeft: 0, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
+         {id: 4, name: 'platformerc', url: '../platformerc/', width: 1200, height: 900, paddingLeft: 0, params: {locale: FTG_LOCALE}, questions: FTG.Questions.Game[FTG_LOCALE], hasRest: true},
      ];
 
      this.mGamesSorting = [

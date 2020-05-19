@@ -140,8 +140,7 @@ p.small {
 img.guidance {
     width: 50px;
     height: auto;
-    margin-right: 10px;
-    margin-bottom: -10px;
+    margin-right: 15px;
 }
 
 #instructions img.key {
@@ -259,6 +258,40 @@ img.guidance {
 .rest-container p,
 .rest-container h1 {
     margin: 0;
+}
+
+/*!
+ * Adjustments for smaller resolutions
+ */
+@media screen (min-width: 1400px), (min-height: 910px) {
+    #info iframe {
+        margin-top: 2%;
+        margin-left: 2%;
+    }
+}
+
+@media screen and (max-height: 890px) {
+    #info {
+        width: 100%;
+        font-size: 1.3em;
+        padding: 0;
+        transform: scaleX(0.8) scaleY(0.8) translateX(-10%) translateY(-10%);
+    }
+    
+    img.guidance {
+        margin-right: 15px;
+        width: 40px;
+        height: auto;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    #info {
+        width: 100%;
+        font-size: 1.3em;
+        padding: 0;
+        transform: scaleX(0.6) scaleY(0.6) translateX(-30%) translateY(-30%);
+    }
 }
 
 /*!

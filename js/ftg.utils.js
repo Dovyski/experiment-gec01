@@ -72,7 +72,7 @@ FTG.Utils.text = function(key, locale) {
                 '<img src="images/info.svg" class="guidance" /> Jogue os jogos, responda o questionário após cada jogo e descanse conforme instruído na tela.<br /><br />' +
                 '<img src="images/info.svg" class="guidance" /> Não desista no meio dos jogos (jogue-os até o final).<br /><br />' +
                 '<img src="images/info.svg" class="guidance" /> Permaneça sentado(a) durante todo o processo.<br /><br />' +
-                '<img src="images/info.svg" class="guidance" /> Seu desempenho nos jogos não está sendo analizada.<br /><br />'
+                '<img src="images/info.svg" class="guidance" /> Seu desempenho nos jogos não está sendo analizado.<br /><br />'
         },
         start: {en: 'Start', pt: 'Iniciar'},
         conclude: {en: 'Conclude', pt: 'Concluir'},

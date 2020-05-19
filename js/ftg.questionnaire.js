@@ -73,6 +73,7 @@ FTG.Questionnaire.prototype.finish = function() {
         aAnswer,
         aLabel,
         aItem,
+        aScrollTo = '',
         aAnswered = 0;
 
     for(i = 0; i < this.mQuestions.length; i++) {
@@ -101,7 +102,19 @@ FTG.Questionnaire.prototype.finish = function() {
 
         } else {
             $('#q' + i).addClass('error').fadeOut('fast').fadeIn();
+            
+            // If this is the first mistake to highlight, let's
+            // mark the point to scroll to.
+            if(aScrollTo == '') {
+                aScrollTo = '#q' + i;
+            }
         }
+    }
+
+    if(aScrollTo != '') {
+        $('html, body').animate({
+            scrollTop: $(aScrollTo).offset().top - 50
+        }, 500);
     }
 
     if(aData.length == this.mQuestions.length) {

@@ -277,14 +277,13 @@ if ($aIsAPI) {
     <!-- JS stuff -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="js/md5.min.js"></script>
 
     <script src="js/highcharts/highcharts-custom.js"></script>
 
     <script src="js/custom.js"></script>
     <script src="../js/ftg.utils.js"></script>
     <script src="js/app.js?20180220"></script>
-    <script src="js/app.experimentviewer.js?20180220"></script>
-    <script src="js/app.monitor.js?20180220"></script>
 </body>
 
 </html>

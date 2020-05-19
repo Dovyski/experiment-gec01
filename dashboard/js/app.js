@@ -95,8 +95,9 @@ APP.Main = function() {
                         '<th scope="row">' + aInfo.id + '</th>' +
                         '<td>' + aInfo.uuid + '</th>' +
                         '<th scope="row">' +
-                            '<a href="javascript:void(0)" data-subject="' + aSubjectId + '" class="subject-link">'+ aSubjectId +'</a>' +
+                            '<a href="javascript:void(0)" data-subject="' + aSubjectId + '" class="subject-link">'+ aSubjectId + '</a>' +
                         '</th>' +
+                        '<td>' + md5(aSubjectId) + '</th>' +
                         '<td><img src="img/' + aInfo.locale + '.png" title="Locale: ' + aInfo.locale + '" /></td>' +
                         '<td>' + aDateCreated.toISOString() + '</td>' +
                         '<td>' + (isValid ? aDateCompleated.toISOString() : '<span class="badge alert-danger">Still incomplete</span>') + '</td>' +
@@ -109,7 +110,8 @@ APP.Main = function() {
                         '<tr>' +
                             '<th>Id</th>' +
                             '<th>UUID</th>' +
-                            '<th>SubjectID</th>' +
+                            '<th>Subject ID</th>' +
+                            '<th>DB hash</th>' +
                             '<th>locale</th>' +
                             '<th>Created at</th>' +
                             '<th>Compleated at</th>' +
@@ -182,69 +184,93 @@ APP.Main = function() {
                 aGames;
 
             if(theData.success) {
-                $('#data-title').html('Subject: ' + theSubject);
+                $('#data-title').html('Subject: ' + theSubject + ' <a href="javascript:void(0)" data-subject="' + theSubject + '" class="subject-link"><i class="fa fa-refresh" title="Refresh data"></i></a>');
                 $('#data-area').empty();
+
+                aSelf.showSubjectExperimentLogs('data-area', theData.data);
+                aSelf.showSubjectQuestionnaires('data-area', theData.data);
 
                 aGames = theData.data.games;
 
                 for(i = 0; i < aGames.length; i++) {
                     aSelf.showSubjectLogsByGame('data-area', theData.data, aGames[i]);
                 }
-
-                aSelf.showSubjectDemographicInfo('data-area', theData.data);
-
             } else {
                 $('#data-area').html('Something wrong');
             }
+
+            $('h2 a.subject-link').click(function() {
+                aSelf.showSubjectData($(this).data('subject'));
+            });
         });
     };
 
-    this.showSubjectDemographicInfo = function(theContainerId, theData) {
+    this.getGameById = function(theGames, theGameId) {
+        var aRet = undefined;
+
+        theGames.map(function(theGame) {
+            if(theGame.id == theGameId) {
+                aRet = theGame;
+            }
+        });
+
+        return aRet;
+    }
+
+    this.showSubjectQuestionnaires = function(theContainerId, theData) {
         var aOut = '',
-            aInfo = [],
-            aHasDemographic = true,
-            i;
+            aInfo,
+            i,
+            j;
 
         if(theData.questionnaires.length == 0) {
+            $('#' + theContainerId).append('<div id="questionnaire">No questionnaire data available.</div>');
             return;
         }
 
-        aHasDemographic = theData.questionnaires.length > theData.games.length;
+        for(i = 0; i < theData.questionnaires.length; i++) {
+            var aGame = this.getGameById(theData.games, theData.questionnaires[i].fk_game);
 
-        if(aHasDemographic) {
-            aInfo = theData.questionnaires[theData.games.length + 1].data;
-        }
+            aOut = '';
+            aOut += '<h2>Questionnaire #' + i + ' - ' + aGame.name +' <small>(game_id: ' + aGame.id + ')</small></h2>';
+            aOut += '<table class="table table-striped">';
+            aOut += 
+                '<thead>' +
+                    '<tr>' +
+                        '<th>Question</th>' +
+                        '<th>Answer</th>' +
+                        '<th>Date</th>' +
+                    '</tr>' +
+                '</thead>';
 
-        aOut += '<h2>Demographics</h2>';
-        aOut += '<table border="1" class="demographics">';
-        aOut += '<tr><th style="width: 70%;">Question</th><th style="width: 30%">Answer</th></tr>';
-        for(i = 0; i < aInfo.length; i++) {
-            aOut += '<tr><td>' + aInfo[i].q + '</td><td>' + aInfo[i].al + ' (' + aInfo[i].a + ')</td></tr>';
-        }
-        if(aInfo.length == 0) {
-            aOut += '<tr><td colspan="2">This subject has no demographic data.</td></tr>';
-        }
-        aOut += '</table>';
+            aOut += '<tbody>';
+            aInfo = theData.questionnaires[i].data.d;
 
-        $('#' + theContainerId).append('<div id="demographics">' + aOut + '</div>');
+            for(j = 0; j < aInfo.length; j++) {
+                aOut += '<tr><td>' + aInfo[j].q + '</td><td>' + aInfo[j].al + ' (' + aInfo[j].a + ')</td><td>' + this.getDateFromTimestamp(theData.questionnaires[i].timestamp, true) + '</td></tr>';
+            }
+
+            if(aInfo.length == 0) {
+                aOut += '<tr><td colspan="2">This subject has no questionnaire data for this batch.</td></tr>';
+            }
+            aOut += '<tbody>';
+            aOut += '</table>';
+
+            $('#' + theContainerId).append('<div id="questionnaire' + i + '">' + aOut + '</div>');
+        }
     };
 
     this.showSubjectLogsByGame = function(theContainerId, theData, theGame) {
         var aOut = '',
-            aExtra = [],
             aInfo,
             aSelf = this,
             i;
 
         aOut += '<h2>' + theGame.name +'</h2>';
-        aOut += '<table border="1" class="demographics">';
+        aOut += '<table class="table table-striped">';
         aOut += '<tr><th style="width: 20%;">Game</th><th style="width: 20%;">Database time</th><th style="width: 60%">Log data</th></tr>';
         for(i = 0; i < theData.logs.length; i++) {
             aInfo = theData.logs[i];
-
-            if(aInfo.fk_game < 0) {
-                aExtra.push(aInfo);
-            }
 
             if(aInfo.fk_game != theGame.id) {
                 continue;
@@ -261,6 +287,40 @@ APP.Main = function() {
         aOut += '</table>';
 
         $('#' + theContainerId).append('<div id="logs-' + theGame.id + '">' + aOut + '</div>');
+    };
+
+    this.showSubjectExperimentLogs = function(theContainerId, theData) {
+        var aOut = '',
+            aExtra = [],
+            aInfo,
+            aSelf = this,
+            i;
+
+        aOut += '<h2> Experiment logs</h2>';
+        aOut += '<table class="table table-striped">';
+        aOut += '<tr><th style="width: 20%;">Database time</th><th style="width: 80%">Log data</th></tr>';
+        for(i = 0; i < theData.logs.length; i++) {
+            aInfo = theData.logs[i];
+
+            var aActions = [];
+
+            aInfo.data.map(function(entry) {
+                var d = JSON.parse(entry.d);
+
+                if(typeof d != "string") {
+                    return;
+                }
+
+                aActions.push('<code>' + entry.d + '</code> ' + aSelf.getDateFromTimestamp(entry.t));
+            });
+
+            if(aActions.length > 0) {
+                aOut += '<tr><td>' + this.getDateFromTimestamp(aInfo.timestamp, true) + '</td><td>' + aActions.join('<br />') + '</td></tr>';
+            }
+        }
+        aOut += '</table>';
+
+        $('#' + theContainerId).append('<div id="logs-experiment">' + aOut + '</div>');
     };
 
     this.getExperimentViewerByIndex = function(theIndex) {

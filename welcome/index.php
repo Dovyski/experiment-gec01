@@ -88,7 +88,7 @@ try {
     <?php } ?>
 
     <!-- Styles -->
-	<link href="../css/style.css?20200513" rel="stylesheet">
+	<link href="../css/style.css?<?php echo CACHE_TAG ?>" rel="stylesheet">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -130,11 +130,12 @@ try {
     <!-- prefetch everything we need -->
 	<script type="text/javascript" src="../js/3rdparty/jquery-2.2.0.min.js"></script>
 	<script type="text/javascript" src="../js/3rdparty/phaser.min.js"></script>
-	<script type="text/javascript" src="../js/ftg.utils.js"></script>
-	<script type="text/javascript" src="../js/ftg.collector.js"></script>
-	<script type="text/javascript" src="../js/ftg.questionnaire.js"></script>
-	<script type="text/javascript" src="../js/ftg.questions.game.js"></script>
-	<script type="text/javascript" src="../js/ftg.questions.user.js"></script>
+	<script type="text/javascript" src="../js/ftg.utils.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.collector.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.questionnaire.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.questions.game.js?<?php echo CACHE_TAG ?>"></script>
+    <script type="text/javascript" src="../js/ftg.questions.user.js?<?php echo CACHE_TAG ?>"></script>
+    
 	<audio id="bip" src="../experiment/sfx/bip.mp3" volume="1.0">There is a problem with the bip sound in the experiment.</audio>
 	<audio id="tan" src="../experiment/sfx/tan.mp3" volume="1.0">There is a problem with the tan sound in the experiment.</audio>
     <audio id="calm" src="../experiment/sfx/calm.mp3" volume="0.8" loop="true">There is a problem with the calm sound in the experiment.</audio>

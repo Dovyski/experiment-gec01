@@ -25,19 +25,19 @@ require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
         <!-- End Google Analytics -->
     <?php } ?>
 
-	<link href="../css/style.css" rel="stylesheet">
+	<link href="../css/style.css?<?php echo CACHE_TAG ?>" rel="stylesheet">
 </head>
 <body>
 	<div id="info"></div>
 	<div id="instructions"></div>
 
 	<script type="text/javascript" src="../js/3rdparty/jquery-2.2.0.min.js"></script>
-	<script type="text/javascript" src="../js/ftg.utils.js"></script>
-	<script type="text/javascript" src="../js/ftg.collector.js"></script>
-	<script type="text/javascript" src="../js/ftg.questionnaire.js"></script>
-	<script type="text/javascript" src="../js/ftg.questions.game.js"></script>
-	<script type="text/javascript" src="../js/ftg.questions.user.js"></script>
-	<script type="text/javascript" src="../js/ftg.experiment.js?20200505"></script>
+	<script type="text/javascript" src="../js/ftg.utils.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.collector.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.questionnaire.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.questions.game.js?<?php echo CACHE_TAG ?>"></script>
+	<script type="text/javascript" src="../js/ftg.questions.user.js?<?php echo CACHE_TAG ?>"></script>
+    <script type="text/javascript" src="../js/ftg.experiment.js?<?php echo CACHE_TAG ?>"></script>
 
 	<audio id="bip" src="./sfx/bip.mp3" volume="1.0">There is a problem with the bip sound in the experiment.</audio>
 	<audio id="tan" src="./sfx/tan.mp3" volume="1.0">There is a problem with the tan sound in the experiment.</audio>

@@ -1,10 +1,16 @@
+<?php
+
+require_once(dirname(__FILE__) . '/../backend/config.php');
+require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
 	<title>Card Flipper</title>
 	<script type="text/javascript" src="../js/3rdparty/phaser.min.js"></script>
-	<script type="text/javascript" src="../js/ftg.utils.js"></script>
+	<script type="text/javascript" src="../js/ftg.utils.js?<?php echo CACHE_TAG ?>"></script>
 
 	<script type="text/javascript" src="./Constants.js?2"></script>
 	<script type="text/javascript" src="./BootState.js"></script>

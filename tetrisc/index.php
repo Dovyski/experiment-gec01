@@ -1,10 +1,16 @@
+<?php
+
+require_once(dirname(__FILE__) . '/../backend/config.php');
+require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
+
+?>
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="UTF-8" />
 	<title>Masonry - Game Dolphin</title>
 	<script src="../js/3rdparty/phaser.min.js"></script>
-	<script src="../js/ftg.utils.js"></script>
+	<script src="../js/ftg.utils.js?<?php echo CACHE_TAG ?>"></script>
 	<script src="../card-flipper/SetupState.js?3"></script>
 	<script src="load.js"></script>
 	<script src="mainmenu.js?5"></script>

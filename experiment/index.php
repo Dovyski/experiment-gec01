@@ -4,7 +4,6 @@ require_once(dirname(__FILE__) . '/../backend/config.php');
 require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>

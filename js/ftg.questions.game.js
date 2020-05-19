@@ -125,19 +125,19 @@
          ]
      },
      {
-        text: 'Ajuste as barrinhas abaixo para demonstrar da melhor forma como você se sentiu no <em>começo</em> do jogo:',
+        text: 'Ajuste os marcadores abaixo para demonstrar da melhor forma como você se sentiu no <em>começo</em> do jogo:',
         slider: true,
         labels: {
-            arousal:'Level of arousal',
-            pleasure: 'Level of pleasure'
+            arousal:'Nível de estímulo',
+            pleasure: 'Nível de prazer'
         },
     },
     {
-        text: 'Ajuste as barrinhas abaixo para demonstrar da melhor forma como você se sentiu no <em>final</em> do jogo:',
+        text: 'Ajuste os marcadores abaixo para demonstrar da melhor forma como você se sentiu no <em>final</em> do jogo:',
         slider: true,
         labels: {
-            arousal:'Level of arousal',
-            pleasure: 'Level of pleasure'
+            arousal:'Nível de estímulo',
+            pleasure: 'Nível de prazer'
         },
     },
  ];

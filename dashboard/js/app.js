@@ -231,6 +231,10 @@ APP.Main = function() {
         for(i = 0; i < theData.questionnaires.length; i++) {
             var aGame = this.getGameById(theData.games, theData.questionnaires[i].fk_game);
 
+            if(!aGame) {
+                continue;
+            }
+
             aOut = '';
             aOut += '<h2>Questionnaire #' + i + ' - ' + aGame.name +' <small>(game_id: ' + aGame.id + ')</small></h2>';
             aOut += '<table class="table table-striped">';

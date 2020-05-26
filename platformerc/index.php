@@ -19,7 +19,7 @@ require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 	<script type="text/javascript" src="./PlayState.js?2"></script>
 	<script type="text/javascript" src="./GameOverState.js?2"></script>
 	<script type="text/javascript" src="./MenuState.js"></script>
-	<script type="text/javascript" src="./TutorialState.js"></script>
+	<script type="text/javascript" src="./TutorialState.js?1"></script>
 	<script type="text/javascript" src="./ProgressBar.js"></script>
 	<script type="text/javascript" src="./Hud.js"></script>
 	<script type="text/javascript" src="./Player.js"></script>

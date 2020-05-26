@@ -16,10 +16,10 @@ TutorialState = function() {
         var aTranslation = {
             clickContinue: {en: 'Click anywhere to continue', pt: 'Clique em qualquer lugar para continuar'},
             instructions: {en: 'Instructions', pt: 'Instruções'},
-            instructionDashKey: {en: '', pt: '(SEGURE) S'},
-            instructionDash: {en: '', pt: 'para deslizar sob obstátuculos'},
-            instructionJumpKey: {en: '', pt: 'SETA PARA CIMA'},
-            instructionJump: {en: '', pt: 'para pular sobre obstáculos'},
+            instructionDashKey: {en: '(HOLD) S', pt: '(SEGURE) S'},
+            instructionDash: {en: 'to slide under obstacles', pt: 'para deslizar sob obstátuculos'},
+            instructionJumpKey: {en: 'UP ARROW KEY', pt: 'SETA PARA CIMA'},
+            instructionJump: {en: 'to jump over obstacles', pt: 'para pular sobre obstáculos'},
         }
 
 		this.game.stage.backgroundColor = '#00D8FF';

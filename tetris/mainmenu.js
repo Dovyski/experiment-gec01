@@ -81,7 +81,7 @@ Game.LoseScreen.prototype = {
         var aTranslation = {
             gameOver: {
                 en: 'Game over.\nClick the button above\n to continue',
-                pt: 'Game over.\n Clique no botão acima para continuar'
+                pt: 'Game over.\n Clique no botão acima\n para continuar'
             }
         };
 

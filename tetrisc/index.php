@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 	<script src="../js/ftg.utils.js?<?php echo CACHE_TAG ?>"></script>
 	<script src="../card-flipper/SetupState.js?3"></script>
 	<script src="load.js"></script>
-	<script src="mainmenu.js?6"></script>
+	<script src="mainmenu.js?7"></script>
 	<script src="block.js"></script>
 	<script src="game.js?2"></script>
 	<style type="text/css">

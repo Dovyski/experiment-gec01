@@ -13,7 +13,7 @@ var GameOverState = function() {
         var aLocale = GlobalInfo.locale || 'en';
         var aTranslation = {
             gameOver: {en: 'Game over', pt: 'Game over'},
-            yourScore: {en: 'Your score', pt: 'Sua pontuação'},
+            yourScore: {en: 'Score', pt: 'Pontuação'},
             continue: {en: 'Continue', pt: 'Continuar'}
         };
         

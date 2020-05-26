@@ -77,6 +77,13 @@ Game.LoseScreen = function(game){
 Game.LoseScreen.prototype = {
 
 	create : function(){
+        var aLocale = GlobalInfo.locale || 'en';
+        var aTranslation = {
+            gameOver: {
+                en: 'Game over.\nClick the button above\n to continue',
+                pt: 'Game over.\n Clique no botão acima para continuar'
+            }
+        };
 
 		this.game.world.bounds.x = 0;
 
@@ -86,7 +93,7 @@ Game.LoseScreen.prototype = {
 
 		this.game.world.bounds.height = 600;
 
-		this.lose = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game over.\nClick the "Next" button above\n to continue', { font: "24px Arial", fill: "#fff", align: "center" });
+		this.lose = this.game.add.text(this.game.world.centerX,this.game.world.centerY,aTranslation.gameOver[aLocale], { font: "24px Arial", fill: "#fff", align: "center" });
 
 		this.lose.anchor.setTo(0.5,0.5);
 

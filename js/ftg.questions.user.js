@@ -97,7 +97,7 @@
 
  FTG.Questions.User_PT = [
     {
-        text: 'Qual sua idade? (Favor responder em anos)',
+        text: 'Qual sua idade? (favor responder em anos)',
         input: true,
     },
     {
@@ -122,7 +122,7 @@
         ]
     },
     {
-        text: 'O quão proficiente ou habilidoso você acredita ser ao jogar video games?',
+        text: 'O quão proficiente ou habilidoso(a) você acredita ser ao jogar video games?',
         hide: true,
         options: [
             {value: 1, label: 'Sem habilidades'},
@@ -163,7 +163,7 @@
         ]
     },
     {
-        text: 'O quão familiar este experimento é para você?',
+        text: 'O quão familiarizado(a) você está com a pesquisa ligada a esse experimento?',
         hide: true,
         options: [
             {value: 1, label: 'Nem um pouco familiar (nunca escutei sobre)'},

@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * Process the raw data in a folder to produce the final dataset files in "/datasets"
+ */
+
+require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/inc/functions.php');
+
+assertRunningAsCmdScript();
+
+$aOptions = array(
+    "data-dir:",
+    "database-file:",
+    "output-dir:",
+    "ignore:",
+    "ids:",
+    "skip-video",
+    "help"
+);
+
+$aArgs = getopt("h", $aOptions);
+
+if(isset($aArgs['h']) || isset($aArgs['help']) || $argc == 1) {
+     echo "Usage: \n";
+     echo " php ".basename($_SERVER['PHP_SELF']) . " [options]\n\n";
+     echo "Options:\n";
+     echo " --data-dir=<path>       Path to the folder containing subject's raw data.\n";
+     echo "                         Each subject must have its own folder within the\n";
+     echo "                         data directory and the folder name must be equal to\n";
+     echo "                         the subject's id. E.g. Assuming data dir is /data/,\n";
+     echo "                         the script will process dir /data/400/ as subject 400,\n";
+     echo "                         /data/401/ as subject 401, and so on.\n";
+     echo " --database-file=<path>  Path to the file containing the SQLite database that\n";
+     echo "                         has the data for all subject sessions. If nothing is\n";
+     echo "                         provided, the root of the data dir is searched for\n";
+     echo "                         a database file.\n";
+     echo " --output-dir=<path>     Path to the folder where processed files will\n";
+     echo "                         be written.\n";
+     echo " --ignore=<ids>          List of subject ids (separated by commas) that will\n";
+     echo "                         be ignored in the process. Use this option to exclude\n";
+     echo "                         subjects with defective data, for instance.\n";
+     echo " --ids=<ids>             List of subject ids (separated by commas) that will\n";
+     echo "                         be used from the data dir to generate the dataset.";
+     echo "                         Use this option to include only a particular set of";
+     echo "                         subjects in a dataset, for instance.";
+     echo " --skip-video            No actions will be performed regarding video files.\n";
+     echo "                         For instance, video files will not be concatenated.";
+     echo " --help, -h              Show this help.\n";
+     echo "\n";
+     exit(1);
+}
+
+$aDefaultDataFolder = dirname(__FILE__) . '\..\data\\';
+$aDataFolder = isset($aArgs['data-dir']) ? $aArgs['data-dir'] : realpath($aDefaultDataFolder);
+$aDatabaseFile = isset($aArgs['database-file']) ? $aArgs['database-file'] : '';
+
+$aDataFolder .= @$aDataFolder[strlen($aDataFolder) - 1] != DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
+
+if(!file_exists($aDataFolder)) {
+    echo 'Unable to access data folder: ' . $aDataFolder . "\n";
+    exit(2);
+}
+
+if(empty($aDatabaseFile)) {
+    $aDatabaseFile = $aDataFolder . DB_FILE;
+}
+
+if(!file_exists($aDatabaseFile)) {
+    echo 'Unable to access data file: ' . $aDatabaseFile . "\n";
+    exit(3);
+}
+
+$aDefaultOutputFolder = dirname(__FILE__) . '\..\datasets\complete-experiment\\';
+$aOutputFolder = isset($aArgs['output-dir']) ? $aArgs['output-dir'] : realpath($aDefaultOutputFolder);
+$aOutputFolder .= @$aOutputFolder[strlen($aOutputFolder) - 1] != DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
+
+if(!file_exists($aOutputFolder)) {
+    echo 'Unable to access output folder: ' . $aOutputFolder . "\n";
+    exit(4);
+}
+
+$aIgnoreList = isset($aArgs['ignore']) ? stringCommasToArray($aArgs['ignore']) : array();
+$aIdsList    = isset($aArgs['ids'])    ? stringCommasToArray($aArgs['ids'])    : array();
+
+$aDb = new PDO('sqlite:' . $aDatabaseFile);
+$aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$aSubjectFolders = findDirectories($aDataFolder);
+
+foreach($aSubjectFolders as $aSubjectDir) {
+    $aSubjectId = trim(basename($aSubjectDir));
+    $aSubjectDir .= DIRECTORY_SEPARATOR;
+
+    $aShouldIgnore = count($aIgnoreList) > 0 && in_array($aSubjectId, $aIgnoreList);
+    $aShouldInclude = count($aIdsList) == 0 || (count($aIdsList) > 0 && in_array($aSubjectId, $aIdsList));
+
+    if($aShouldIgnore || !$aShouldInclude) {
+        echo 'Subject '.$aSubjectId . ' was skipped (' . ($aShouldIgnore ? 'in --ignore list' : 'not in --ids list') . ')' . "\n";
+        continue;
+    }
+
+    $aOutputPath = $aOutputFolder . $aSubjectId . DIRECTORY_SEPARATOR;
+    $aOutputLogsPath = $aOutputPath . 'logs' . DIRECTORY_SEPARATOR;
+
+    @mkdir($aOutputPath);
+    @mkdir($aOutputLogsPath);
+
+    echo 'Processing subject ' . $aSubjectId . "\n";
+    echo '  source folder: ' . $aSubjectDir . "\n";
+    echo '  output folder: ' . $aOutputPath . "\n";
+
+    $aSubjectSyncStart = getSyncStartFromFile($aSubjectDir);
+
+    if($aSubjectSyncStart === false) {
+        echo 'Unable to load "sync_start.txt" file for subject '.$aSubjectId . "\n";
+        exit(4);
+    }
+
+    echo '  creating ground files...' . "\n";
+
+    $aGroundFileExporter = dirname(__FILE__) . '\export-ground-data.php';
+    $aExportCmd = 'php "'.$aGroundFileExporter.'" --database-file="' . $aDatabaseFile . '" --subject=' . $aSubjectId . ' --output-prefix="' . $aOutputPath . $aSubjectId . '"';
+    runAndExitIfFailed($aExportCmd, $aOutputLogsPath . 'ground-files-generation.log');
+
+    $aSummaryPath = $aOutputPath . $aSubjectId . '.json';
+    $aGroundSummary = loadSubjectGroundDataSummary($aSummaryPath);
+
+    if($aGroundSummary == NULL) {
+        echo 'Unable to load ground data summary from: ' . $aSummaryPath . "\n";
+        exit(5);
+    }
+}
+
+echo "\n";
+echo 'Datasets generated successfuly!' . "\n";
+
+?>

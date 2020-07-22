@@ -1,0 +1,1 @@
+php create-datasets.php --data-dir="G:\Experiments\Experiment 2\Real" --output-dir="G:\HCI-databases\DAGIBS-HCI" --ids=900 --exclude-video

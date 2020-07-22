@@ -155,7 +155,7 @@ function collectGameStats($theSubjectRawGameData, $theGames) {
 }
 
 function getWhenExperimentStarted($thePDO, $theSubjectId) {
-    $aStmt = $thePDO->prepare("SELECT timestamp FROM logs WHERE uuid = :uuid AND data LIKE '%experiment_hr_start%'");
+    $aStmt = $thePDO->prepare("SELECT timestamp FROM logs WHERE uuid = :uuid AND data LIKE '%experiment_hr_start%' ORDER BY timestamp ASC");
 	$aStmt->bindParam(':uuid', $theSubjectId);
     $aStmt->execute();
 
@@ -166,14 +166,15 @@ function getWhenExperimentStarted($thePDO, $theSubjectId) {
     }
 
     if($aRet == null) {
-        throw new Exception("Experiment for uuid ".$aSubjectId." has no experiment_hr_start");
+        throw new Exception("Experiment for uuid ".$theSubjectId." has no experiment_hr_start");
     }
 
     if(count($aRet) > 1) {
-        throw new Exception("Experiment for uuid ".$aSubjectId." has multiple experiment_hr_start");
+        //throw new Exception("Experiment for uuid ".$theSubjectId." has multiple experiment_hr_start");
+        echo "[WARN] Experiment for uuid $theSubjectId has multiple experiment_hr_start (".implode(', ', $aRet).").\n";
     }
 
-    return (int)$aRet[0];
+    return (int)$aRet[count($aRet) - 1];
 }
 
 function getWhenExperimentEnded($thePDO, $theSubjectId) {
@@ -188,11 +189,11 @@ function getWhenExperimentEnded($thePDO, $theSubjectId) {
     }
 
     if($aRet == null) {
-        throw new Exception("Experiment for uuid ".$aSubjectId." has no experiment_end");
+        throw new Exception("Experiment for uuid ".$theSubjectId." has no experiment_end");
     }
 
     if(count($aRet) > 1) {
-        throw new Exception("Experiment for uuid ".$aSubjectId." has multiple experiment_end");
+        throw new Exception("Experiment for uuid ".$theSubjectId." has multiple experiment_end");
     }
 
     return (int)$aRet[0];
@@ -266,30 +267,6 @@ function getGameLabelByTimestamp($theSubjectData, $theTimestamp) {
     }
 
     return $aRet;
-}
-
-// Calculates all sorts of means from the provided subject data,
-function crunchNumbers($theSubjectData, $theGroupingAmount = 15) {
-    foreach($theSubjectData['games'] as $aKey => $aGame) {
-        echo 'Analyzing game ' . $aGame['name'] . "\n";
-        $aMeans = calculateMeans(sanitizeHRValues($aGame['hr']), $theGroupingAmount);
-
-        $theSubjectData['games'][$aKey]['hr-means'] = $aMeans['means'];
-        $theSubjectData['games'][$aKey]['hr-mean'] = $aMeans['mean'];
-    }
-
-    foreach($theSubjectData['rests'] as $aKey => $aRest) {
-        echo 'Analyzing rest #' . $aKey . "\n";
-        $aMeans = calculateMeans(sanitizeHRValues($aRest['hr']), $theGroupingAmount);
-
-        $theSubjectData['rests'][$aKey]['hr-means'] = $aMeans['means'];
-        $theSubjectData['rests'][$aKey]['hr-mean'] = $aMeans['mean'];
-    }
-
-    $theSubjectData['baseline'] = calculateBaseline($theSubjectData);
-    $theSubjectData = calculateVariationsFromBaseline($theSubjectData, $theSubjectData['baseline']);
-
-    return $theSubjectData;
 }
 
 function writeSubjectSummary($theFilePath, $theData, $theSubjectId, $theExperimentStarted, $theExperimentEnded, $theGroundFiles, $theQuestionnaireFiles) {
@@ -588,6 +565,25 @@ function assertRunningAsCmdScript($theExitError = 10) {
 function findDirectories($thePathParentDir) {
     $aDirs = glob($thePathParentDir . '*', GLOB_ONLYDIR);
     return $aDirs;
+}
+
+function findDatabaseFiles($thePathParentDir) {
+    $aFiles = glob($thePathParentDir . '*.sqlite');
+    return $aFiles;
+}
+
+function findSubjects($thePDO) {
+    $aData = array();
+
+    $aStmt = $thePDO->prepare("SELECT * FROM subjects WHERE 1");
+    $aStmt->execute();
+
+    while($aRow = $aStmt->fetch(PDO::FETCH_ASSOC)) {
+        $aId = $aRow['id'];
+        $aData[$aId] = $aRow;
+    }
+
+    return $aData;
 }
 
 function getSyncStartFromFile($theSubjectFolderPath, $theFileName = 'sync_start.txt') {

@@ -6,6 +6,8 @@
 
 require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/inc/functions.php');
+require_once(dirname(__FILE__) . '/../backend/config.php');
+require_once(dirname(__FILE__) . '/../backend/inc/functions.php');
 
 assertRunningAsCmdScript();
 
@@ -51,7 +53,7 @@ if(isset($aArgs['h']) || isset($aArgs['help']) || $argc == 1) {
      exit(1);
 }
 
-$aDefaultDataFolder = dirname(__FILE__) . '\..\data\\';
+$aDefaultDataFolder = dirname(__FILE__) . '\..\backend\data\\';
 $aDataFolder = isset($aArgs['data-dir']) ? $aArgs['data-dir'] : realpath($aDefaultDataFolder);
 $aDatabaseFile = isset($aArgs['database-file']) ? $aArgs['database-file'] : '';
 
@@ -63,7 +65,7 @@ if(!file_exists($aDataFolder)) {
 }
 
 if(empty($aDatabaseFile)) {
-    $aDatabaseFile = $aDataFolder . DB_FILE;
+    $aDatabaseFile = dirname(__FILE__) . '\..\backend\\' . DB_FILE;
 }
 
 if(!file_exists($aDatabaseFile)) {
@@ -71,7 +73,7 @@ if(!file_exists($aDatabaseFile)) {
     exit(3);
 }
 
-$aDefaultOutputFolder = dirname(__FILE__) . '\..\datasets\complete-experiment\\';
+$aDefaultOutputFolder = dirname(__FILE__) . '\datasets\complete-experiment\\';
 $aOutputFolder = isset($aArgs['output-dir']) ? $aArgs['output-dir'] : realpath($aDefaultOutputFolder);
 $aOutputFolder .= @$aOutputFolder[strlen($aOutputFolder) - 1] != DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '';
 
@@ -86,41 +88,43 @@ $aIdsList    = isset($aArgs['ids'])    ? stringCommasToArray($aArgs['ids'])    :
 $aDb = new PDO('sqlite:' . $aDatabaseFile);
 $aDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$aSubjectFolders = findDirectories($aDataFolder);
+$aSubjects = findSubjects($aDb);
 
-foreach($aSubjectFolders as $aSubjectDir) {
-    $aSubjectId = trim(basename($aSubjectDir));
-    $aSubjectDir .= DIRECTORY_SEPARATOR;
+foreach($aSubjects as $aSubjectInfo) {
+    $aSubjectId = $aSubjectInfo['id'] . $aSubjectInfo['uuid'];
+    $aSubjectDir = $aDataFolder;
 
     $aShouldIgnore = count($aIgnoreList) > 0 && in_array($aSubjectId, $aIgnoreList);
     $aShouldInclude = count($aIdsList) == 0 || (count($aIdsList) > 0 && in_array($aSubjectId, $aIdsList));
 
     if($aShouldIgnore || !$aShouldInclude) {
-        echo 'Subject '.$aSubjectId . ' was skipped (' . ($aShouldIgnore ? 'in --ignore list' : 'not in --ids list') . ')' . "\n";
+        echo 'Subject '.$aSubjectId . ' skipped (' . ($aShouldIgnore ? 'in --ignore list' : 'not in --ids list') . ').' . "\n";
         continue;
     }
 
+    if($aSubjectInfo['compleated_at'] == 0) {
+        echo 'Subject '.$aSubjectId . ' skipped due to incomplete experiment.' . "\n";
+        continue;
+    }
+
+    $aSubjectDatabaseFile = getUserDbPath($aSubjectId);
     $aOutputPath = $aOutputFolder . $aSubjectId . DIRECTORY_SEPARATOR;
     $aOutputLogsPath = $aOutputPath . 'logs' . DIRECTORY_SEPARATOR;
 
     @mkdir($aOutputPath);
     @mkdir($aOutputLogsPath);
 
-    echo 'Processing subject ' . $aSubjectId . "\n";
-    echo '  source folder: ' . $aSubjectDir . "\n";
+    echo 'Subject ' . $aSubjectId . "\n";
+    echo '  id: ' . $aSubjectInfo['id'] . "\n";
+    echo '  uuid: ' . $aSubjectInfo['uuid'] . "\n";
+    echo '  subject id: ' . $aSubjectId . "\n";
+    echo '  subject db: ' . $aSubjectDatabaseFile . "\n";
     echo '  output folder: ' . $aOutputPath . "\n";
-
-    $aSubjectSyncStart = getSyncStartFromFile($aSubjectDir);
-
-    if($aSubjectSyncStart === false) {
-        echo 'Unable to load "sync_start.txt" file for subject '.$aSubjectId . "\n";
-        exit(4);
-    }
-
     echo '  creating ground files...' . "\n";
 
     $aGroundFileExporter = dirname(__FILE__) . '\export-ground-data.php';
-    $aExportCmd = 'php "'.$aGroundFileExporter.'" --database-file="' . $aDatabaseFile . '" --subject=' . $aSubjectId . ' --output-prefix="' . $aOutputPath . $aSubjectId . '"';
+    $aExportCmd = 'php "'.$aGroundFileExporter.'" --database-file="' . $aSubjectDatabaseFile . '" --subject=' . $aSubjectId . ' --output-prefix="' . $aOutputPath . $aSubjectId . '"';
+    echo $aExportCmd . "\n";
     runAndExitIfFailed($aExportCmd, $aOutputLogsPath . 'ground-files-generation.log');
 
     $aSummaryPath = $aOutputPath . $aSubjectId . '.json';

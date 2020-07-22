@@ -1,1 +1,3 @@
 php create-datasets.php --data-dir="G:\Experiments\Experiment 2\Real" --output-dir="G:\HCI-databases\DAGIBS-HCI" --ids=900 --exclude-video
+
+php .\create-datasets.php --database-file="C:\Users\dovys\Desktop\database.sqlite" --data-dir="C:\Users\dovys\Desktop\data" --ignore=15ece4f8e28c86,25ece51517d79b,35ece52feaa302,45ece546695587,55ece562343f3f,65ece57d423eaf,75ece595bb4b7e,85ece5b2676dbc

@@ -27,12 +27,7 @@ if(isset($aArgs['h']) || isset($aArgs['help']) || $argc == 1) {
      echo "Usage: \n";
      echo " php ".basename($_SERVER['PHP_SELF']) . " [options]\n\n";
      echo "Options:\n";
-     echo " --data-dir=<path>       Path to the folder containing subject's raw data.\n";
-     echo "                         Each subject must have its own folder within the\n";
-     echo "                         data directory and the folder name must be equal to\n";
-     echo "                         the subject's id. E.g. Assuming data dir is /data/,\n";
-     echo "                         the script will process dir /data/400/ as subject 400,\n";
-     echo "                         /data/401/ as subject 401, and so on.\n";
+     echo " --data-dir=<path>       Path to the folder containing subjects database files.\n";
      echo " --database-file=<path>  Path to the file containing the SQLite database that\n";
      echo "                         has the data for all subject sessions. If nothing is\n";
      echo "                         provided, the root of the data dir is searched for\n";
@@ -107,7 +102,7 @@ foreach($aSubjects as $aSubjectInfo) {
         continue;
     }
 
-    $aSubjectDatabaseFile = getUserDbPath($aSubjectId);
+    $aSubjectDatabaseFile = $aSubjectDir . getUserHash($aSubjectId) . '.sqlite';
     $aOutputPath = $aOutputFolder . $aSubjectId . DIRECTORY_SEPARATOR;
     $aOutputLogsPath = $aOutputPath . 'logs' . DIRECTORY_SEPARATOR;
 
@@ -120,11 +115,10 @@ foreach($aSubjects as $aSubjectInfo) {
     echo '  subject id: ' . $aSubjectId . "\n";
     echo '  subject db: ' . $aSubjectDatabaseFile . "\n";
     echo '  output folder: ' . $aOutputPath . "\n";
-    echo '  creating ground files...' . "\n";
 
     $aGroundFileExporter = dirname(__FILE__) . '\export-ground-data.php';
     $aExportCmd = 'php "'.$aGroundFileExporter.'" --database-file="' . $aSubjectDatabaseFile . '" --subject=' . $aSubjectId . ' --output-prefix="' . $aOutputPath . $aSubjectId . '"';
-    echo $aExportCmd . "\n";
+
     runAndExitIfFailed($aExportCmd, $aOutputLogsPath . 'ground-files-generation.log');
 
     $aSummaryPath = $aOutputPath . $aSubjectId . '.json';

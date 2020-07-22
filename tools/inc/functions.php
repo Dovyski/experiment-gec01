@@ -170,7 +170,6 @@ function getWhenExperimentStarted($thePDO, $theSubjectId) {
     }
 
     if(count($aRet) > 1) {
-        //throw new Exception("Experiment for uuid ".$theSubjectId." has multiple experiment_hr_start");
         echo "[WARN] Experiment for uuid $theSubjectId has multiple experiment_hr_start (".implode(', ', $aRet).").\n";
     }
 
@@ -178,7 +177,7 @@ function getWhenExperimentStarted($thePDO, $theSubjectId) {
 }
 
 function getWhenExperimentEnded($thePDO, $theSubjectId) {
-    $aStmt = $thePDO->prepare("SELECT timestamp FROM logs WHERE uuid = :uuid AND data LIKE '%experiment_end%'");
+    $aStmt = $thePDO->prepare("SELECT timestamp FROM logs WHERE uuid = :uuid AND data LIKE '%experiment_end%' ORDER BY timestamp ASC");
 	$aStmt->bindParam(':uuid', $theSubjectId);
     $aStmt->execute();
 
@@ -193,7 +192,7 @@ function getWhenExperimentEnded($thePDO, $theSubjectId) {
     }
 
     if(count($aRet) > 1) {
-        throw new Exception("Experiment for uuid ".$theSubjectId." has multiple experiment_end");
+        echo "[WARN] Experiment for uuid $theSubjectId has multiple experiment_end (".implode(', ', $aRet).").\n";
     }
 
     return (int)$aRet[0];
@@ -272,14 +271,6 @@ function getGameLabelByTimestamp($theSubjectData, $theTimestamp) {
 function writeSubjectSummary($theFilePath, $theData, $theSubjectId, $theExperimentStarted, $theExperimentEnded, $theGroundFiles, $theQuestionnaireFiles) {
     $aInfo = array(
         'subject' => $theSubjectId,
-        'video' => array(
-            'file'              => $theSubjectId . '.MTS',
-            'width'             => 1920,
-            'height'            => 1080,
-            'framerate'         => 50,
-            'ffmpeg_meta_video' => 'h264 (High) (HDPR / 0x52504448), yuv420p, 1920x1080 [SAR 1:1 DAR 16:9], 50 fps, 50 tbr, 90k tbn, 100 tbc',
-            'ffmpeg_meta_audio' => 'ac3 (AC-3 / 0x332D4341), 48000 Hz, stereo, fltp, 256 kb/s'
-        ),
         'experiment' => array(
             'duration_seconds' => $theExperimentEnded - $theExperimentStarted,
             'start_timestamp'  => $theExperimentStarted,
@@ -327,7 +318,7 @@ function printExportSubjectDataSummary($theExperimentStarted, $theExperimentEnde
     echo "\n" . 'Summary' . "\n";
     echo '-------------------------------' . "\n";
 
-    echo 'HR measurements' . "\n";
+    echo 'Experiment time' . "\n";
     echo '  Start: 0 (timestamp: ' . $theExperimentStarted . ')' . "\n";
     echo '  End: '.($theExperimentEnded - $theExperimentStarted).' (timestamp: ' . $theExperimentEnded . ')' . "\n";
 
@@ -411,9 +402,12 @@ function exportQuestionnaireFiles($theOutputPath, $theData, $theSubjectId) {
 
     $aQuestionnaireFiles = array(
         'calibration' => writeQuestionnaireFile($aBasePath . 'calibration.csv', $theSubjectId, $aQuestionnaireData, $gCalibrationGames),
-        'cots'        => writeQuestionnaireFile($aBasePath . 'cots.csv',        $theSubjectId, $aQuestionnaireData, $gCotsGames),
         'demographic' => writeQuestionnaireFile($aBasePath . 'demographic.csv', $theSubjectId, $aQuestionnaireData, array(-1))
     );
+
+    if(count($gCotsGames) > 0) {
+        $aQuestionnaireFiles['cots'] = writeQuestionnaireFile($aBasePath . 'cots.csv', $theSubjectId, $aQuestionnaireData, $gCotsGames);
+    }
 
     return $aQuestionnaireFiles;
 }
